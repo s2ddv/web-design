@@ -112,6 +112,44 @@ h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; margin: 0 0 34px; }
 .about-copy { width: 100%; }
 .about-aside { position: relative; right: 0; bottom: 0; }
 
+/* Refinos complementares: desenho de cartões, ritmo e leitura do conteúdo. */
+.restaurant-card { border-radius: 4px; box-shadow: 0 12px 30px rgba(80, 48, 28, 0.07); overflow: hidden; }
+.card-image img { opacity: 0.94; }
+.header-content { max-width: 1120px; }
+.hero-content { align-items: flex-start; }
+.restaurant-grid, .category-list, .tips-grid { align-items: stretch; justify-content: center; }
+.card-body { min-height: 245px; }
+.card-body h3 { letter-spacing: -0.02em; }
+.card-body p { line-height: 1.5; }
+.source-note { opacity: 0.9; }
+.category-item { transition: background-color 180ms ease, transform 180ms ease; }
+.category-item:hover { transform: translateY(-4px); }
+.tips-grid article { min-height: 155px; }
+.about-copy { min-height: 210px; }
+.about-aside { max-width: 260px; }
+.button, .text-link, .site-nav a { cursor: pointer; }
+.button { border-radius: 2px; }
+.button-light { border-radius: 2px; }
+.site-nav { list-style: none; }
+.site-nav a { letter-spacing: 0.02em; }
+.site-footer { text-align: center; }
+.site-footer p { letter-spacing: 0.04em; }
+.hero-section { overflow: hidden; }
+.hero-section::after { background-color: var(--gold); content: ""; display: block; height: 8px; opacity: 0.8; position: absolute; right: 0; top: 118px; width: 11%; }
+.restaurants-section h2 { max-width: 560px; }
+.categories-section h2 { max-width: 560px; }
+.tips-section h2 { max-width: 560px; }
+.category-item:nth-child(even) { background-color: #4b6250; }
+.restaurant-card:nth-child(2) .card-tag { color: var(--sage); }
+.restaurant-card:nth-child(3) .card-tag { color: #a46b1b; }
+.restaurant-card:nth-child(4) .card-tag { color: var(--sage); }
+.restaurant-card:nth-child(5) .card-tag { color: #a46b1b; }
+.restaurant-card:nth-child(6) .card-tag { color: var(--sage); }
+.text-link { text-underline-offset: 3px; }
+.card-image figcaption { border-radius: 2px; }
+.category-icon { letter-spacing: 0.1em; }
+.button-light:hover { background-color: rgba(255,255,255,0.12); }
+
 @media (max-width: 900px) {
   .restaurant-grid { grid-template-columns: repeat(2, 1fr); }
   .category-list { grid-template-columns: repeat(2, 1fr); }
