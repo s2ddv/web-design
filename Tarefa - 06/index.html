@@ -8,14 +8,55 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Sabores de Sorocaba</h1>
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="#inicio" aria-label="Sabores de Sorocaba - início">Sabores<span> de Sorocaba</span></a>
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a href="#restaurantes">Restaurantes</a>
+        <a href="#categorias">Categorias</a>
+        <a href="#dicas">Dicas</a>
+        <a href="#sobre">Sobre o projeto</a>
+      </nav>
+    </div>
   </header>
   <main>
-    <p>Um guia acadêmico para descobrir diferentes mesas da cidade.</p>
+    <section id="inicio" class="hero-section">
+      <div class="container hero-content">
+        <p class="eyebrow">Guia gastronômico acadêmico</p>
+        <h1>Uma cidade com muitos sabores para descobrir.</h1>
+        <p>Conheça referências gastronômicas de Sorocaba e encontre uma mesa que combine com o seu momento.</p>
+        <a class="button" href="#restaurantes">Explorar sugestões</a>
+      </div>
+    </section>
+    <section id="restaurantes" class="restaurants-section">
+      <div class="container">
+        <p class="eyebrow">Seleção inicial</p>
+        <h2>Restaurantes em destaque</h2>
+        <div class="restaurant-grid"></div>
+      </div>
+    </section>
+    <section id="categorias" class="categories-section">
+      <div class="container">
+        <p class="eyebrow">Para cada vontade</p>
+        <h2>Categorias gastronômicas</h2>
+        <div class="category-list"></div>
+      </div>
+    </section>
+    <section id="dicas" class="tips-section">
+      <div class="container">
+        <h2>Dicas para escolher</h2>
+      </div>
+    </section>
+    <section id="sobre" class="about-section">
+      <div class="container">
+        <h2>Sobre o projeto</h2>
+      </div>
+    </section>
   </main>
-  <footer>
-    <p>Projeto de Web Design — 2026</p>
+  <footer class="site-footer">
+    <div class="container">
+      <p>Projeto de Web Design — 2026</p>
+    </div>
   </footer>
 </body>
 </html>
