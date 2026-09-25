@@ -150,6 +150,19 @@ h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; margin: 0 0 34px; }
 .category-icon { letter-spacing: 0.1em; }
 .button-light:hover { background-color: rgba(255,255,255,0.12); }
 
+/* Interações discretas para orientar a navegação e dar retorno visual. */
+.site-nav a { transition: color 160ms ease, border-color 160ms ease; border-bottom: 1px solid transparent; }
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--rust); border-bottom-color: var(--rust); }
+.button { transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.button:hover, .button:focus-visible { background-color: var(--rust-dark); box-shadow: 0 8px 16px rgba(127, 46, 30, 0.18); transform: translateY(-2px); }
+.restaurant-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+.restaurant-card:hover { box-shadow: 0 18px 36px rgba(80, 48, 28, 0.14); transform: translateY(-6px); }
+.restaurant-card:hover .card-image img { opacity: 1; transform: scale(1.04); }
+.card-image img { transition: opacity 180ms ease, transform 300ms ease; }
+.text-link { transition: color 160ms ease; }
+.text-link:hover, .text-link:focus-visible { color: var(--gold); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
 @media (max-width: 900px) {
   .restaurant-grid { grid-template-columns: repeat(2, 1fr); }
   .category-list { grid-template-columns: repeat(2, 1fr); }
