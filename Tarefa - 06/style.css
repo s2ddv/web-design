@@ -156,6 +156,18 @@ h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; margin: 0 0 34px; }
   .about-section .container { gap: 36px; }
 }
 
+/* Tablet: mantém dois cartões por linha e reduz a densidade dos espaços. */
+@media (min-width: 641px) and (max-width: 900px) {
+  .container { width: min(100% - 40px, 760px); }
+  .hero-section { padding: 78px 0 84px; }
+  .hero-section h1 { max-width: 650px; }
+  .restaurant-grid { gap: 18px; }
+  .card-body { min-height: 260px; padding: 18px; }
+  .category-item { min-height: 165px; padding: 20px; }
+  .tips-grid { gap: 20px; }
+  .about-section .container { grid-template-columns: 1fr 0.65fr; }
+}
+
 @media (max-width: 640px) {
   .container { width: min(100% - 32px, 560px); }
   .site-header { padding: 15px 0; }
@@ -168,4 +180,18 @@ h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; margin: 0 0 34px; }
   .card-image { height: 220px; }
   .about-section .container { gap: 25px; }
   .about-aside { border-left: 0; border-top: 1px solid rgba(255,255,255,0.35); padding: 22px 0 0; }
+}
+
+/* Celular pequeno: garante leitura sem rolagem horizontal. */
+@media (max-width: 380px) {
+  .container { width: calc(100% - 24px); }
+  .brand { font-size: 1.25rem; }
+  .site-nav { gap: 6px 12px; }
+  .site-nav a { font-size: 0.78rem; }
+  .hero-section h1 { font-size: 2.45rem; }
+  .hero-section p:not(.eyebrow) { font-size: 1rem; }
+  .button { width: 100%; }
+  .card-image { height: 190px; }
+  .card-body { min-height: auto; padding: 18px; }
+  h2 { font-size: 2rem; }
 }
