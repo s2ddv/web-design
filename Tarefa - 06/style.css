@@ -98,6 +98,20 @@ h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; margin: 0 0 34px; }
 .site-footer { background-color: #271c16; color: #d8c9be; padding: 24px 0; }
 .site-footer p { font-family: Arial, sans-serif; font-size: 0.75rem; margin: 0; }
 
+/* Propriedades fundamentais praticadas em aula aparecem nos blocos abaixo. */
+.site-header { position: relative; top: 0; right: 0; left: 0; }
+.hero-content { position: relative; width: 100%; min-height: 220px; }
+.button { height: auto; min-width: 160px; text-align: center; }
+.restaurant-card { width: 100%; }
+.card-image img { height: 100%; }
+.site-footer { position: relative; bottom: 0; width: 100%; }
+.site-nav a { color: var(--muted); display: inline-block; padding: 4px 0; text-align: center; }
+.category-item h3 { color: #fff; }
+.category-item p { font-size: 0.95rem; }
+.tips-grid article { display: block; }
+.about-copy { width: 100%; }
+.about-aside { position: relative; right: 0; bottom: 0; }
+
 @media (max-width: 900px) {
   .restaurant-grid { grid-template-columns: repeat(2, 1fr); }
   .category-list { grid-template-columns: repeat(2, 1fr); }
