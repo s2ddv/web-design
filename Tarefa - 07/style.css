@@ -1,3 +1,4 @@
+/* Variáveis centralizam a paleta aplicada em toda a interface. */
 :root {
   --ink: #eaf1ff;
   --muted: #a8b5cf;
@@ -8,14 +9,17 @@
   --white: #ffffff;
 }
 
+/* Reset garante que dimensões incluam borda e preenchimento. */
 * {
   box-sizing: border-box;
 }
 
+/* Rolagem suave melhora a navegação entre as âncoras da página. */
 html {
   scroll-behavior: smooth;
 }
 
+/* Base tipográfica e contraste geral do documento. */
 body {
   margin: 0;
   background: var(--navy);
@@ -24,11 +28,13 @@ body {
   line-height: 1.6;
 }
 
+/* Contêiner limita a largura de leitura e mantém margens laterais fluidas. */
 .container {
   width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
 }
 
+/* Cabeçalho e menu principal. */
 .site-header {
   background: rgba(9, 19, 35, 0.96);
   border-bottom: 1px solid var(--line);
@@ -90,6 +96,7 @@ body {
   color: var(--accent);
 }
 
+/* Hero apresenta o objetivo do guia com destaque visual. */
 .hero-section {
   padding: 104px 0 88px;
   background: radial-gradient(circle at 82% 20%, #1c4870 0, transparent 32%), var(--navy);
@@ -175,6 +182,7 @@ h1 {
   color: var(--muted);
 }
 
+/* Catálogo e cartões demonstram o Box Model e o layout flexível. */
 .catalog-section {
   padding: 88px 0;
   background: #0d1b30;
@@ -193,6 +201,7 @@ h2 {
   color: var(--muted);
 }
 
+/* A grade flexível distribui cartões por espaço disponível. */
 .hardware-grid {
   display: flex;
   flex-direction: row;
@@ -205,6 +214,7 @@ h2 {
   column-gap: 24px;
 }
 
+/* Cada cartão tem dimensões, margem, preenchimento e borda explícitos. */
 .hardware-card {
   width: 100%;
   min-height: 462px;
@@ -298,6 +308,7 @@ h2 {
   flex: 1 1 auto;
 }
 
+/* Ajustes intermediários preservam a leitura em tablets. */
 @media (max-width: 900px) {
   .hero-section {
     padding: 80px 0 68px;
@@ -312,6 +323,7 @@ h2 {
   }
 }
 
+/* Ajustes para celulares empilham os conteúdos e reduzem espaços. */
 @media (max-width: 640px) {
   .container {
     width: min(100% - 32px, 1120px);
@@ -386,6 +398,7 @@ h2 {
   }
 }
 
+/* Guia de montagem organiza passos e alertas de segurança. */
 .guide-section {
   padding: 88px 0;
   background: #132845;
@@ -495,6 +508,7 @@ h2 {
   }
 }
 
+/* FAQ, apresentação do projeto e rodapé concluem a experiência. */
 .faq-section {
   padding: 88px 0;
   background: #0d1b30;
