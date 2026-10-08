@@ -37,8 +37,11 @@ body {
 .header-content {
   min-height: 76px;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+  align-content: center;
   gap: 24px;
 }
 
@@ -48,6 +51,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.04em;
   text-decoration: none;
+  flex: 0 1 auto;
 }
 
 .brand span,
@@ -64,8 +68,14 @@ body {
 
 .site-nav {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 20px;
+  row-gap: 8px;
+  column-gap: 20px;
+  flex: 0 1 auto;
 }
 
 .site-nav a {
@@ -87,13 +97,20 @@ body {
 
 .hero-layout {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  align-content: center;
   justify-content: space-between;
   gap: 56px;
+  column-gap: 56px;
+  row-gap: 32px;
 }
 
 .hero-copy {
   max-width: 720px;
+  flex: 1 1 580px;
+  align-self: center;
 }
 
 .eyebrow {
@@ -140,6 +157,9 @@ h1 {
   padding: 22px;
   border: 1px solid var(--line);
   background: rgba(16, 33, 59, 0.7);
+  flex: 0 1 210px;
+  align-self: center;
+  order: 2;
 }
 
 .panel-number {
@@ -174,9 +194,15 @@ h2 {
 }
 
 .hardware-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: flex-start;
   gap: 24px;
+  row-gap: 24px;
+  column-gap: 24px;
 }
 
 .hardware-card {
@@ -187,6 +213,10 @@ h2 {
   border: 1px solid var(--line);
   overflow: hidden;
   background: var(--surface);
+  flex: 1 1 300px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 300px;
 }
 
 .hardware-card img {
@@ -201,6 +231,10 @@ h2 {
   margin: 0;
   padding: 20px;
   border-top: 4px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .hardware-card:nth-child(2n) .card-content {
@@ -233,10 +267,18 @@ h2 {
 
 .hardware-card dl {
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: auto;
 }
 
 .hardware-card dl div {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
   min-height: 38px;
   margin: 0;
   padding: 8px 0;
@@ -253,4 +295,5 @@ h2 {
 .hardware-card dd {
   margin: 0;
   color: var(--muted);
+  flex: 1 1 auto;
 }
