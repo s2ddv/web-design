@@ -6,8 +6,32 @@
   <meta name="description" content="PC Builder Guide: guia educativo para conhecer componentes e montar computadores.">
   <title>PC Builder Guide | Componentes e montagem</title>
   <link rel="stylesheet" href="style.css">
+  <!--
+    Mapa semântico da página:
+    - o cabeçalho reúne marca e links internos;
+    - o conteúdo principal começa com a apresentação do guia;
+    - o catálogo usa artigos independentes, um por componente;
+    - cada artigo associa uma ilustração SVG local ao seu assunto;
+    - textos alternativos descrevem as ilustrações para leitores de tela;
+    - o título do cartão identifica o componente explicado;
+    - a categoria contextualiza a função do componente;
+    - o primeiro parágrafo resume o papel da peça no computador;
+    - a lista de definição apresenta critérios de compatibilidade;
+    - a ordem dos cartões não representa recomendação de compra;
+    - as imagens são esquemáticas para evitar atribuir dados a produtos reais;
+    - o guia de montagem é uma lista ordenada de etapas gerais;
+    - cada etapa inclui cuidados que ajudam a reduzir erros comuns;
+    - o aviso final reforça a consulta aos manuais dos fabricantes;
+    - o FAQ usa details e summary para respostas expansíveis sem JavaScript;
+    - a seção sobre delimita o caráter acadêmico do material;
+    - o rodapé repete a identidade e oferece retorno ao topo;
+    - os identificadores das seções são os destinos do menu de navegação;
+    - a linguagem do documento está definida como português brasileiro;
+    - a viewport permite adaptação proporcional em telas menores.
+  -->
 </head>
 <body>
+  <!-- Cabeçalho persistente com identidade visual e navegação por âncoras. -->
   <header class="site-header">
     <div class="container header-content">
       <a class="brand" href="#inicio" aria-label="PC Builder Guide - início">PC<span>Builder</span><small>Guide</small></a>
@@ -19,7 +43,9 @@
       </nav>
     </div>
   </header>
+  <!-- Conteúdo educativo central da página. -->
   <main>
+    <!-- Hero: introduz a proposta e direciona o visitante ao catálogo. -->
     <section id="inicio" class="hero-section">
       <div class="container hero-layout">
         <div class="hero-copy">
@@ -34,95 +60,218 @@
         </aside>
       </div>
     </section>
+    <!-- Catálogo: reúne vinte artigos de hardware com dados de consulta. -->
     <section id="componentes" class="catalog-section">
       <div class="container">
         <p class="eyebrow">Catálogo essencial</p>
         <h2>Conheça as peças do seu computador</h2>
         <p class="section-intro">As imagens são ilustrativas. As características descrevem a categoria de forma geral, sem atribuir especificações a modelos comerciais.</p>
+        <!-- Contêiner flexível que distribui os cartões do catálogo. -->
         <div class="hardware-grid">
           <article class="hardware-card">
             <img src="assets/placa-mae.webp" alt="Ilustração esquemática de uma placa-mãe">
-            <div class="card-content"><p class="card-category">Base do sistema</p><h3>Placa-mãe</h3><p>Conecta os componentes e determina formatos, soquete do processador e conexões disponíveis.</p><dl><div><dt>Formato</dt><dd>ATX, microATX ou mini-ITX</dd></div><div><dt>Verificar</dt><dd>Soquete, chipset e memória</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Base do sistema</p>
+              <!-- Explica a peça que integra as conexões do computador. -->
+              <h3>Placa-mãe</h3>
+              <p>Conecta os componentes e determina formatos, soquete do processador e conexões disponíveis.</p>
+              <dl><div><dt>Formato</dt><dd>ATX, microATX ou mini-ITX</dd></div><div><dt>Verificar</dt><dd>Soquete, chipset e memória</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/processador.webp" alt="Ilustração esquemática de um processador">
-            <div class="card-content"><p class="card-category">Processamento</p><h3>Processador (CPU)</h3><p>Executa instruções e coordena tarefas do sistema e dos programas.</p><dl><div><dt>Núcleos</dt><dd>Executam tarefas em paralelo</dd></div><div><dt>Verificar</dt><dd>Soquete e refrigeração</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Processamento</p>
+              <!-- Explica a unidade central que executa instruções. -->
+              <h3>Processador (CPU)</h3>
+              <p>Executa instruções e coordena tarefas do sistema e dos programas.</p>
+              <dl><div><dt>Núcleos</dt><dd>Executam tarefas em paralelo</dd></div><div><dt>Verificar</dt><dd>Soquete e refrigeração</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/placa-video.webp" alt="Ilustração esquemática de uma placa de vídeo">
-            <div class="card-content"><p class="card-category">Gráficos</p><h3>Placa de vídeo (GPU)</h3><p>Renderiza gráficos e acelera tarefas compatíveis, como jogos e criação visual.</p><dl><div><dt>Interface</dt><dd>Slot PCI Express</dd></div><div><dt>Verificar</dt><dd>Espaço e energia no gabinete</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Gráficos</p>
+              <!-- Explica o componente dedicado ao processamento gráfico. -->
+              <h3>Placa de vídeo (GPU)</h3>
+              <p>Renderiza gráficos e acelera tarefas compatíveis, como jogos e criação visual.</p>
+              <dl><div><dt>Interface</dt><dd>Slot PCI Express</dd></div><div><dt>Verificar</dt><dd>Espaço e energia no gabinete</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/ram.webp" alt="Ilustração esquemática de módulos de memória RAM">
-            <div class="card-content"><p class="card-category">Memória</p><h3>Memória RAM</h3><p>Armazena temporariamente dados usados pelos programas em execução.</p><dl><div><dt>Tipo</dt><dd>Compatível com a placa-mãe</dd></div><div><dt>Verificar</dt><dd>Capacidade e quantidade de slots</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Memória</p>
+              <!-- Explica a memória temporária usada por programas ativos. -->
+              <h3>Memória RAM</h3>
+              <p>Armazena temporariamente dados usados pelos programas em execução.</p>
+              <dl><div><dt>Tipo</dt><dd>Compatível com a placa-mãe</dd></div><div><dt>Verificar</dt><dd>Capacidade e quantidade de slots</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/ssd.webp" alt="Ilustração esquemática de uma unidade SSD">
-            <div class="card-content"><p class="card-category">Armazenamento</p><h3>SSD</h3><p>Armazena sistema e arquivos em memória flash, com acesso rápido aos dados.</p><dl><div><dt>Conexão</dt><dd>SATA ou M.2 compatível</dd></div><div><dt>Verificar</dt><dd>Capacidade e encaixe físico</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Armazenamento</p>
+              <!-- Explica o armazenamento em memória flash. -->
+              <h3>SSD</h3>
+              <p>Armazena sistema e arquivos em memória flash, com acesso rápido aos dados.</p>
+              <dl><div><dt>Conexão</dt><dd>SATA ou M.2 compatível</dd></div><div><dt>Verificar</dt><dd>Capacidade e encaixe físico</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/hdd.webp" alt="Ilustração esquemática de um disco rígido">
-            <div class="card-content"><p class="card-category">Armazenamento</p><h3>Disco rígido (HDD)</h3><p>Guarda grandes volumes de dados em discos magnéticos, útil para arquivos extensos.</p><dl><div><dt>Conexão</dt><dd>SATA</dd></div><div><dt>Verificar</dt><dd>Baia de 3,5 polegadas</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Armazenamento</p>
+              <!-- Explica o armazenamento magnético de maior capacidade. -->
+              <h3>Disco rígido (HDD)</h3>
+              <p>Guarda grandes volumes de dados em discos magnéticos, útil para arquivos extensos.</p>
+              <dl><div><dt>Conexão</dt><dd>SATA</dd></div><div><dt>Verificar</dt><dd>Baia de 3,5 polegadas</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/fonte.webp" alt="Ilustração esquemática de uma fonte de alimentação">
-            <div class="card-content"><p class="card-category">Energia</p><h3>Fonte de alimentação</h3><p>Converte a energia da tomada e a distribui aos componentes com conectores adequados.</p><dl><div><dt>Potência</dt><dd>Dimensionada para o conjunto</dd></div><div><dt>Verificar</dt><dd>Conectores e certificação</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Energia</p>
+              <!-- Explica a distribuição de energia para o conjunto. -->
+              <h3>Fonte de alimentação</h3>
+              <p>Converte a energia da tomada e a distribui aos componentes com conectores adequados.</p>
+              <dl><div><dt>Potência</dt><dd>Dimensionada para o conjunto</dd></div><div><dt>Verificar</dt><dd>Conectores e certificação</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/cooler.webp" alt="Ilustração esquemática de um cooler para processador">
-            <div class="card-content"><p class="card-category">Refrigeração</p><h3>Cooler de CPU</h3><p>Remove calor do processador por dissipador e ventoinha ou circuito líquido.</p><dl><div><dt>Montagem</dt><dd>Compatível com o soquete</dd></div><div><dt>Verificar</dt><dd>Altura e fluxo de ar</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Refrigeração</p>
+              <!-- Explica a remoção de calor do processador. -->
+              <h3>Cooler de CPU</h3>
+              <p>Remove calor do processador por dissipador e ventoinha ou circuito líquido.</p>
+              <dl><div><dt>Montagem</dt><dd>Compatível com o soquete</dd></div><div><dt>Verificar</dt><dd>Altura e fluxo de ar</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/gabinete.webp" alt="Ilustração esquemática de um gabinete de computador">
-            <div class="card-content"><p class="card-category">Estrutura</p><h3>Gabinete</h3><p>Abriga, protege e organiza as peças, influenciando ventilação e expansão.</p><dl><div><dt>Formato</dt><dd>Compatível com a placa-mãe</dd></div><div><dt>Verificar</dt><dd>Espaço para GPU e coolers</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Estrutura</p>
+              <!-- Explica a estrutura que organiza e protege as peças. -->
+              <h3>Gabinete</h3>
+              <p>Abriga, protege e organiza as peças, influenciando ventilação e expansão.</p>
+              <dl><div><dt>Formato</dt><dd>Compatível com a placa-mãe</dd></div><div><dt>Verificar</dt><dd>Espaço para GPU e coolers</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/monitor.webp" alt="Ilustração esquemática de um monitor">
-            <div class="card-content"><p class="card-category">Saída de vídeo</p><h3>Monitor</h3><p>Exibe a imagem gerada pelo computador para estudo, trabalho e entretenimento.</p><dl><div><dt>Painel</dt><dd>Define cores e ângulos de visão</dd></div><div><dt>Verificar</dt><dd>Resolução e conexões</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Saída de vídeo</p>
+              <!-- Explica o periférico de saída visual. -->
+              <h3>Monitor</h3>
+              <p>Exibe a imagem gerada pelo computador para estudo, trabalho e entretenimento.</p>
+              <dl><div><dt>Painel</dt><dd>Define cores e ângulos de visão</dd></div><div><dt>Verificar</dt><dd>Resolução e conexões</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/teclado.webp" alt="Ilustração esquemática de um teclado">
-            <div class="card-content"><p class="card-category">Entrada</p><h3>Teclado</h3><p>Permite inserir texto e comandos; há modelos de membrana e mecânicos.</p><dl><div><dt>Conexão</dt><dd>USB ou sem fio</dd></div><div><dt>Verificar</dt><dd>Layout e ergonomia</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Entrada</p>
+              <!-- Explica o periférico de entrada textual. -->
+              <h3>Teclado</h3>
+              <p>Permite inserir texto e comandos; há modelos de membrana e mecânicos.</p>
+              <dl><div><dt>Conexão</dt><dd>USB ou sem fio</dd></div><div><dt>Verificar</dt><dd>Layout e ergonomia</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/mouse.webp" alt="Ilustração esquemática de um mouse">
-            <div class="card-content"><p class="card-category">Entrada</p><h3>Mouse</h3><p>Controla o ponteiro e oferece botões para interagir com a interface.</p><dl><div><dt>Sensor</dt><dd>Óptico ou a laser</dd></div><div><dt>Verificar</dt><dd>Formato e conexão</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Entrada</p>
+              <!-- Explica o periférico de apontamento. -->
+              <h3>Mouse</h3>
+              <p>Controla o ponteiro e oferece botões para interagir com a interface.</p>
+              <dl><div><dt>Sensor</dt><dd>Óptico ou a laser</dd></div><div><dt>Verificar</dt><dd>Formato e conexão</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/headset.webp" alt="Ilustração esquemática de um headset">
-            <div class="card-content"><p class="card-category">Áudio</p><h3>Headset</h3><p>Reúne fones e microfone para ouvir conteúdos e conversar em chamadas.</p><dl><div><dt>Conexão</dt><dd>Analógica, USB ou sem fio</dd></div><div><dt>Verificar</dt><dd>Conforto e microfone</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Áudio</p>
+              <!-- Explica o periférico combinado de áudio e microfone. -->
+              <h3>Headset</h3>
+              <p>Reúne fones e microfone para ouvir conteúdos e conversar em chamadas.</p>
+              <dl><div><dt>Conexão</dt><dd>Analógica, USB ou sem fio</dd></div><div><dt>Verificar</dt><dd>Conforto e microfone</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/caixa-som.webp" alt="Ilustração esquemática de caixas de som">
-            <div class="card-content"><p class="card-category">Áudio</p><h3>Caixas de som</h3><p>Reproduzem áudio para ambientes compartilhados ou uso individual em mesa.</p><dl><div><dt>Conexão</dt><dd>P2, USB, Bluetooth ou digital</dd></div><div><dt>Verificar</dt><dd>Espaço e alimentação</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Áudio</p>
+              <!-- Explica a saída de áudio para o ambiente. -->
+              <h3>Caixas de som</h3>
+              <p>Reproduzem áudio para ambientes compartilhados ou uso individual em mesa.</p>
+              <dl><div><dt>Conexão</dt><dd>P2, USB, Bluetooth ou digital</dd></div><div><dt>Verificar</dt><dd>Espaço e alimentação</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/adaptador-wifi.webp" alt="Ilustração esquemática de um adaptador Wi-Fi">
-            <div class="card-content"><p class="card-category">Conectividade</p><h3>Adaptador Wi-Fi</h3><p>Permite conectar o computador a redes sem fio quando não há solução integrada.</p><dl><div><dt>Interface</dt><dd>PCI Express ou USB</dd></div><div><dt>Verificar</dt><dd>Padrão do roteador</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Conectividade</p>
+              <!-- Explica a conexão do computador a redes sem fio. -->
+              <h3>Adaptador Wi-Fi</h3>
+              <p>Permite conectar o computador a redes sem fio quando não há solução integrada.</p>
+              <dl><div><dt>Interface</dt><dd>PCI Express ou USB</dd></div><div><dt>Verificar</dt><dd>Padrão do roteador</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/placa-rede.webp" alt="Ilustração esquemática de uma placa de rede">
-            <div class="card-content"><p class="card-category">Expansão</p><h3>Placa de rede</h3><p>Oferece uma porta de rede cabeada ou recursos de conectividade adicionais.</p><dl><div><dt>Interface</dt><dd>PCI Express</dd></div><div><dt>Verificar</dt><dd>Slot disponível</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Expansão</p>
+              <!-- Explica a expansão de conectividade cabeada. -->
+              <h3>Placa de rede</h3>
+              <p>Oferece uma porta de rede cabeada ou recursos de conectividade adicionais.</p>
+              <dl><div><dt>Interface</dt><dd>PCI Express</dd></div><div><dt>Verificar</dt><dd>Slot disponível</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/pendrive.webp" alt="Ilustração esquemática de um pen drive">
-            <div class="card-content"><p class="card-category">Acessório</p><h3>Pen drive</h3><p>Transporta arquivos e pode preparar uma mídia de instalação do sistema.</p><dl><div><dt>Conexão</dt><dd>USB</dd></div><div><dt>Verificar</dt><dd>Capacidade e padrão da porta</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Acessório</p>
+              <!-- Explica a mídia portátil para arquivos e instalação. -->
+              <h3>Pen drive</h3>
+              <p>Transporta arquivos e pode preparar uma mídia de instalação do sistema.</p>
+              <dl><div><dt>Conexão</dt><dd>USB</dd></div><div><dt>Verificar</dt><dd>Capacidade e padrão da porta</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/cabo-sata.webp" alt="Ilustração esquemática de um cabo SATA">
-            <div class="card-content"><p class="card-category">Conexões</p><h3>Cabos SATA</h3><p>Ligam unidades SATA à placa-mãe para transferência de dados.</p><dl><div><dt>Uso</dt><dd>Dados de SSD e HDD SATA</dd></div><div><dt>Verificar</dt><dd>Quantidade de portas</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Conexões</p>
+              <!-- Explica a ligação de dados das unidades SATA. -->
+              <h3>Cabos SATA</h3>
+              <p>Ligam unidades SATA à placa-mãe para transferência de dados.</p>
+              <dl><div><dt>Uso</dt><dd>Dados de SSD e HDD SATA</dd></div><div><dt>Verificar</dt><dd>Quantidade de portas</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/ventoinha.webp" alt="Ilustração esquemática de uma ventoinha para gabinete">
-            <div class="card-content"><p class="card-category">Refrigeração</p><h3>Ventoinhas do gabinete</h3><p>Movimentam o ar para ajudar a remover calor dos componentes internos.</p><dl><div><dt>Tamanho</dt><dd>Depende dos pontos de fixação</dd></div><div><dt>Verificar</dt><dd>Direção do fluxo de ar</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Refrigeração</p>
+              <!-- Explica a circulação de ar dentro do gabinete. -->
+              <h3>Ventoinhas do gabinete</h3>
+              <p>Movimentam o ar para ajudar a remover calor dos componentes internos.</p>
+              <dl><div><dt>Tamanho</dt><dd>Depende dos pontos de fixação</dd></div><div><dt>Verificar</dt><dd>Direção do fluxo de ar</dd></div></dl>
+            </div>
           </article>
           <article class="hardware-card">
             <img src="assets/pasta-termica.webp" alt="Ilustração esquemática de um tubo de pasta térmica">
-            <div class="card-content"><p class="card-category">Refrigeração</p><h3>Pasta térmica</h3><p>Melhora o contato térmico entre processador e cooler quando aplicada corretamente.</p><dl><div><dt>Aplicação</dt><dd>Pequena quantidade na CPU</dd></div><div><dt>Verificar</dt><dd>Instruções do cooler</dd></div></dl></div>
+            <div class="card-content">
+              <p class="card-category">Refrigeração</p>
+              <!-- Explica o material que melhora o contato térmico. -->
+              <h3>Pasta térmica</h3>
+              <p>Melhora o contato térmico entre processador e cooler quando aplicada corretamente.</p>
+              <dl><div><dt>Aplicação</dt><dd>Pequena quantidade na CPU</dd></div><div><dt>Verificar</dt><dd>Instruções do cooler</dd></div></dl>
+            </div>
           </article>
         </div>
       </div>
     </section>
+    <!-- Guia: organiza as principais etapas da montagem em sequência. -->
     <section id="guia" class="guide-section">
       <div class="container">
         <div class="guide-heading">
@@ -132,6 +281,7 @@
           </div>
           <p>Leia os manuais dos componentes e trabalhe com calma em uma mesa limpa, seca e bem iluminada. Este roteiro é uma visão geral, não substitui as instruções do fabricante.</p>
         </div>
+        <!-- Lista ordenada porque a execução das etapas possui uma progressão. -->
         <ol class="assembly-steps">
           <li class="assembly-step">
             <span class="step-number">01</span>
@@ -189,12 +339,14 @@
             </div>
           </li>
         </ol>
+        <!-- Aviso complementar que concentra as precauções de segurança. -->
         <aside class="guide-warning">
           <h3>Importante</h3>
           <p>Desligue a fonte da tomada antes de conectar ou remover componentes. Se tiver dúvida sobre uma etapa, consulte o manual específico ou procure assistência técnica qualificada.</p>
         </aside>
       </div>
     </section>
+    <!-- FAQ: esclarece decisões frequentes sem exigir scripts. -->
     <section id="perguntas" class="faq-section">
       <div class="container faq-layout">
         <div class="faq-intro">
@@ -203,6 +355,7 @@
           <p>Monte sua lista com calma. A compatibilidade e a segurança da instalação são mais importantes que escolher somente pelo preço ou aparência.</p>
           <a class="button button-outline" href="#componentes">Revisar o catálogo</a>
         </div>
+        <!-- Cada details disponibiliza uma resposta expansível nativa do HTML. -->
         <div class="faq-list">
           <details class="faq-item">
             <summary>Todo computador precisa de placa de vídeo dedicada?</summary>
@@ -227,6 +380,7 @@
         </div>
       </div>
     </section>
+    <!-- Contexto acadêmico e limites informativos do projeto. -->
     <section id="sobre" class="about-section">
       <div class="container about-layout">
         <div>
@@ -237,6 +391,7 @@
       </div>
     </section>
   </main>
+  <!-- Rodapé: encerra a página e facilita o retorno ao início. -->
   <footer class="site-footer">
     <div class="container footer-layout">
       <a class="brand" href="#inicio" aria-label="Voltar ao início do PC Builder Guide">PC<span>Builder</span><small>Guide</small></a>
