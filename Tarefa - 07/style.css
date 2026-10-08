@@ -180,6 +180,11 @@ h2 {
 }
 
 .hardware-card {
+  width: 100%;
+  min-height: 462px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
   overflow: hidden;
   background: var(--surface);
 }
@@ -192,7 +197,18 @@ h2 {
 }
 
 .card-content {
+  min-height: 282px;
+  margin: 0;
   padding: 20px;
+  border-top: 4px solid transparent;
+}
+
+.hardware-card:nth-child(2n) .card-content {
+  border-top-color: #3c7792;
+}
+
+.hardware-card:nth-child(2n + 1) .card-content {
+  border-top-color: var(--accent);
 }
 
 .card-category {
@@ -221,8 +237,11 @@ h2 {
 
 .hardware-card dl div {
   display: flex;
-  gap: 10px;
+  min-height: 38px;
+  margin: 0;
   padding: 8px 0;
+  border: 0;
+  gap: 10px;
   border-top: 1px solid var(--line);
 }
 
