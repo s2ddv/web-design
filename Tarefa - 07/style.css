@@ -154,3 +154,84 @@ h1 {
   margin: 12px 0 0;
   color: var(--muted);
 }
+
+.catalog-section {
+  padding: 88px 0;
+  background: #0d1b30;
+}
+
+h2 {
+  margin: 0;
+  color: var(--white);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.12;
+}
+
+.section-intro {
+  max-width: 720px;
+  margin: 18px 0 40px;
+  color: var(--muted);
+}
+
+.hardware-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.hardware-card {
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.hardware-card img {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-category {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hardware-card h3 {
+  margin: 0;
+  color: var(--white);
+  font-size: 1.25rem;
+}
+
+.hardware-card p:not(.card-category) {
+  margin: 12px 0 16px;
+  color: var(--muted);
+}
+
+.hardware-card dl {
+  margin: 0;
+}
+
+.hardware-card dl div {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.hardware-card dt {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.hardware-card dd {
+  margin: 0;
+  color: var(--muted);
+}
