@@ -31,11 +31,11 @@ Não foram usados frameworks, bibliotecas de componentes, dependências externas
 ```text
 Tarefa - 07/
 ├── assets/
-│   ├── placa-mae.svg
-│   ├── processador.svg
-│   ├── placa-video.svg
+│   ├── placa-mae.webp
+│   ├── processador.webp
+│   ├── placa-video.webp
 │   ├── ...
-│   └── pasta-termica.svg
+│   └── pasta-termica.webp
 ├── index.html
 ├── style.css
 └── README.md
