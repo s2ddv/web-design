@@ -22,6 +22,7 @@ Object.assign(dom, { budgetList: document.querySelector("#budget-list"), emptyBu
 Object.assign(dom, { chart: document.querySelector("#expense-chart"), chartEmpty: document.querySelector("#chart-empty"), chartLegend: document.querySelector("#chart-legend") });
 Object.assign(dom, { themeToggle: document.querySelector("#theme-toggle") });
 Object.assign(dom, { restoreDemo: document.querySelector("#restore-demo"), demoDialog: document.querySelector("#demo-dialog"), confirmDemo: document.querySelector("#confirm-demo") });
+Object.assign(dom, { exportData: document.querySelector("#export-data") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -47,12 +48,14 @@ function initializeApp() {
   dom.themeToggle.addEventListener("click", toggleTheme);
   dom.restoreDemo.addEventListener("click", () => dom.demoDialog.showModal());
   dom.confirmDemo.addEventListener("click", restoreDemoData);
+  dom.exportData.addEventListener("click", exportData);
 }
 
 function initializeTheme() { const saved = localStorage.getItem(THEME_STORAGE_KEY); const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; applyTheme(saved || preferred); }
 function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); }
 function applyTheme(theme) { document.documentElement.dataset.theme = theme; dom.themeToggle?.setAttribute("aria-pressed", String(theme === "dark")); dom.themeToggle?.querySelector(".sr-only") && (dom.themeToggle.querySelector(".sr-only").textContent = theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"); try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch {} drawExpenseChart(); }
 function restoreDemoData() { const month = currentMonthKey(); const stamp = new Date().toISOString(); state.transactions = [{ id: crypto.randomUUID(), type: "income", description: "Salário demonstrativo", amountCents: 480000, category: "Trabalho", date: `${month}-05`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Mercado demonstrativo", amountCents: 6845, category: "Alimentação", date: `${month}-07`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Transporte demonstrativo", amountCents: 3200, category: "Transporte", date: `${month}-09`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Curso demonstrativo", amountCents: 8900, category: "Educação", date: `${month}-11`, createdAt: stamp }]; state.budgets = [{ category: "Alimentação", limitCents: 90000 }, { category: "Transporte", limitCents: 45000 }, { category: "Lazer", limitCents: 35000 }]; saveTransactions(); saveBudgets(); renderTransactions(); updateIndicators(); renderBudgets(); drawExpenseChart(); showFeedback("Exemplos restaurados. Todos os dados são fictícios."); }
+function exportData() { const payload = { application: "FinDash", version: "0.10.0", exportedAt: new Date().toISOString(), currency: "BRL", transactions: state.transactions, budgets: state.budgets }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = `findash-dados-${todayISO()}.json`; document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(url); showFeedback("Arquivo JSON exportado com sucesso."); }
 
 function initializeNavigation() {
   if (!dom.menuButton || !dom.navigation) return;
