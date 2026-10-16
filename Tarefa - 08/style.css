@@ -90,6 +90,9 @@ h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
 .transaction-actions { display: flex; gap: .35rem; }.icon-button { min-width: 2rem; min-height: 2rem; border: 1px solid var(--line); border-radius: .45rem; color: var(--muted); background: #fff; cursor: pointer; }.icon-button:hover, .icon-button:focus-visible { color: var(--primary); border-color: var(--primary); }.icon-button.delete:hover, .icon-button.delete:focus-visible { color: #a7302d; border-color: #a7302d; }
 .modal-dialog { width: min(calc(100% - 2rem), 430px); padding: 0; border: 0; border-radius: var(--radius-lg); color: var(--ink); background: var(--surface); box-shadow: 0 24px 70px rgba(0,0,0,.24); }.modal-dialog::backdrop { background: rgba(18, 32, 26, .62); }.modal-content { padding: 1.75rem; }.modal-content h2 { margin-bottom: .7rem; font-size: 1.75rem; }.modal-content p:not(.eyebrow) { color: var(--muted); }.modal-actions { display: flex; justify-content: end; flex-wrap: wrap; gap: .65rem; margin-top: 1.5rem; }.modal-actions button { border: 0; cursor: pointer; }.button-danger { color: #fff; background: #b23e38; }
 
+/* Filtros combináveis aplicados sem recarregar a página. */
+.filters { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: .5rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }.filters input, .filters select { width: 100%; min-height: 2.35rem; padding: .4rem .55rem; border: 1px solid #c9d2c9; border-radius: .45rem; color: var(--ink); background: #fff; font: inherit; font-size: .8rem; }.filters input:focus, .filters select:focus { outline: 3px solid rgba(21,106,80,.16); border-color: var(--primary); }.no-results { margin: 0; padding: 2rem 1rem; color: var(--muted); text-align: center; }
+
 @media (max-width: 700px) {
   .menu-toggle { display: block; }
   .main-nav { display: none; position: absolute; left: 1.25rem; right: 1.25rem; top: 4.2rem; padding: 1rem; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow); }
@@ -99,6 +102,7 @@ h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
   .transactions-layout { grid-template-columns: 1fr; }.section-heading { align-items: start; flex-direction: column; gap: .7rem; }.section-heading > p { max-width: none; }.field-row { grid-template-columns: 1fr; gap: 0; }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }.saving-card { grid-template-columns: 1fr; gap: .65rem; }
   .transaction-actions { flex-direction: column; }
+  .filters { grid-template-columns: 1fr 1fr; }.search-field { grid-column: 1 / -1; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.button { transition: none; } }

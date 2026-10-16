@@ -15,6 +15,7 @@ const dom = {
 };
 Object.assign(dom, { totalIncome: document.querySelector("#total-income"), totalExpenses: document.querySelector("#total-expenses"), totalBalance: document.querySelector("#total-balance"), summaryCount: document.querySelector("#summary-count"), balanceLabel: document.querySelector("#balance-label"), savingsRate: document.querySelector("#savings-rate"), savingsProgress: document.querySelector("#savings-progress"), savingsMessage: document.querySelector("#savings-message") });
 Object.assign(dom, { deleteDialog: document.querySelector("#delete-dialog"), deleteMessage: document.querySelector("#delete-dialog-message"), confirmDelete: document.querySelector("#confirm-delete") });
+Object.assign(dom, { search: document.querySelector("#search-transactions"), filterType: document.querySelector("#filter-type"), filterCategory: document.querySelector("#filter-category"), sort: document.querySelector("#sort-transactions"), noResults: document.querySelector("#no-results") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -28,6 +29,7 @@ function initializeApp() {
   dom.form.addEventListener("submit", handleTransactionSubmit);
   dom.cancelEdit.addEventListener("click", resetTransactionForm);
   dom.confirmDelete.addEventListener("click", deleteSelectedTransaction);
+  [dom.search, dom.filterType, dom.filterCategory, dom.sort].forEach(control => control.addEventListener("input", renderTransactions));
 }
 
 function initializeNavigation() {
@@ -116,10 +118,21 @@ function updateIndicators() {
 
 function renderTransactions() {
   dom.list.replaceChildren();
-  const ordered = [...state.transactions].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+  const ordered = getFilteredTransactions();
   ordered.forEach(transaction => dom.list.append(createTransactionItem(transaction)));
-  dom.empty.hidden = ordered.length > 0;
-  dom.count.textContent = `${ordered.length} ${ordered.length === 1 ? "registro" : "registros"}`;
+  dom.empty.hidden = state.transactions.length > 0;
+  dom.noResults.hidden = !(state.transactions.length > 0 && ordered.length === 0);
+  dom.count.textContent = `${ordered.length} ${ordered.length === 1 ? "registro" : "registros"} exibidos`;
+}
+
+function normalizeText(value) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR"); }
+function getFilteredTransactions() {
+  const query = normalizeText(dom.search.value.trim());
+  const result = state.transactions.filter(item => {
+    const matchesQuery = !query || normalizeText(item.description).includes(query) || normalizeText(item.category).includes(query);
+    return matchesQuery && (dom.filterType.value === "all" || item.type === dom.filterType.value) && (dom.filterCategory.value === "all" || item.category === dom.filterCategory.value);
+  });
+  return result.sort((first, second) => { const comparison = first.date.localeCompare(second.date) || first.createdAt.localeCompare(second.createdAt); return dom.sort.value === "newest" ? -comparison : comparison; });
 }
 
 // A criação por nós do DOM evita a interpretação de conteúdo fornecido pelo usuário.
