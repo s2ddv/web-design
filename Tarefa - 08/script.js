@@ -218,7 +218,14 @@ function isValidISODate(value) {
   const check = new Date(Date.UTC(year, month - 1, day));
   return check.getUTCFullYear() === year && check.getUTCMonth() === month - 1 && check.getUTCDate() === day;
 }
-function todayISO() { return new Date().toISOString().slice(0, 10); }
+function todayISO() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
 function formatMoney(cents) { return money.format(cents / 100); }
 function formatDate(value) { return dateView.format(new Date(`${value}T12:00:00`)); }
 
