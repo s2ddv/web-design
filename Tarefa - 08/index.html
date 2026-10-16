@@ -88,6 +88,20 @@
       </div>
     </section>
 
+    <!-- Resumo global: considera todos os lançamentos, independentemente do mês. -->
+    <section id="resumo" class="summary-section" aria-labelledby="summary-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">VISÃO GERAL</p><h2 id="summary-title">Seu resumo de todos os lançamentos.</h2></div><p>Os indicadores abaixo representam todo o histórico registrado.</p></div>
+        <div class="summary-grid">
+          <article class="summary-card income-card"><p>Receitas</p><strong id="total-income">R$ 0,00</strong><span>Entradas acumuladas</span></article>
+          <article class="summary-card expense-card"><p>Despesas</p><strong id="total-expenses">R$ 0,00</strong><span>Saídas acumuladas</span></article>
+          <article class="summary-card balance-card"><p>Saldo</p><strong id="total-balance">R$ 0,00</strong><span id="balance-label">Aguardando lançamentos</span></article>
+          <article class="summary-card count-card"><p>Lançamentos</p><strong id="summary-count">0</strong><span>Registros no total</span></article>
+        </div>
+        <div class="saving-card"><div><p>Taxa de economia</p><strong id="savings-rate">—</strong></div><div class="saving-progress" role="progressbar" aria-label="Taxa de economia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="savings-progress"></span></div><p id="savings-message">Adicione receitas para acompanhar este indicador.</p></div>
+      </div>
+    </section>
+
     <!-- Área de lançamentos: a base de dados financeira da aplicação. -->
     <section id="transacoes" class="transactions-section" aria-labelledby="transactions-title">
       <div class="container">
