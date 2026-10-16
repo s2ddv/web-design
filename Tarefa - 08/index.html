@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FinDash, um dashboard financeiro pessoal local e privado.">
+  <title>FinDash | Seu dinheiro, com clareza</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#inicio">Pular para o conteúdo principal</a>
+
+  <!-- Cabeçalho e navegação da apresentação inicial. -->
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="#inicio" aria-label="FinDash, ir ao início">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>FinDash</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+        <span class="sr-only">Abrir menu de navegação</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+      <nav id="main-nav" class="main-nav" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#privacidade">Privacidade</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- Esta área apresenta o propósito do produto antes dos recursos financeiros. -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">ORGANIZAÇÃO FINANCEIRA PESSOAL</p>
+          <h1>Decisões financeiras começam com uma visão mais clara.</h1>
+          <p class="hero-text">O FinDash reúne seus lançamentos em um espaço simples, privado e feito para acompanhar seu dinheiro com tranquilidade.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#como-funciona">Conhecer o FinDash</a>
+            <a class="button button-ghost" href="#privacidade">Sua privacidade</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Resumo da proposta do FinDash">
+          <span class="hero-card-icon" aria-hidden="true">↗</span>
+          <p class="hero-card-label">Planejamento em foco</p>
+          <p class="hero-card-value">Clareza para o seu próximo passo.</p>
+          <div class="mini-bars" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="feature-section">
+      <div class="container">
+        <p class="eyebrow">FEITO PARA O DIA A DIA</p>
+        <h2>Uma base tranquila para cuidar do que importa.</h2>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span aria-hidden="true">◎</span>
+            <h3>Visão organizada</h3>
+            <p>Centralize informações para enxergar seus hábitos financeiros com mais segurança.</p>
+          </article>
+          <article class="feature-card">
+            <span aria-hidden="true">◈</span>
+            <h3>Uso direto</h3>
+            <p>Uma interface objetiva, construída para tornar o acompanhamento parte da rotina.</p>
+          </article>
+          <article class="feature-card">
+            <span aria-hidden="true">◉</span>
+            <h3>Dados locais</h3>
+            <p>Suas informações ficam no seu navegador, sem necessidade de conta ou servidor.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacidade" class="privacy-section">
+      <div class="container privacy-content">
+        <div>
+          <p class="eyebrow">PRIVACIDADE EM PRIMEIRO LUGAR</p>
+          <h2>Seu planejamento é seu.</h2>
+        </div>
+        <p>O FinDash funciona inteiramente no navegador. Nesta versão, não há login, banco de dados remoto ou integração bancária. Você controla os dados exibidos na sua tela.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true">F</span><span>FinDash</span></a>
+      <p>Dashboard Financeiro Pessoal · Projeto acadêmico de Web Design</p>
+      <a href="#privacidade">Aviso de privacidade</a>
+    </div>
+  </footer>
+</body>
+</html>
