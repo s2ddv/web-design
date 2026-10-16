@@ -127,10 +127,17 @@
           </form>
           <div class="transactions-panel">
             <div class="panel-title"><div><h3>Últimos lançamentos</h3><p id="transactions-count">0 registros</p></div></div>
+            <div class="filters" aria-label="Filtros de lançamentos">
+              <label class="search-field"><span class="sr-only">Pesquisar por descrição ou categoria</span><input id="search-transactions" type="search" placeholder="Pesquisar descrição ou categoria"></label>
+              <label><span class="sr-only">Filtrar por tipo</span><select id="filter-type"><option value="all">Todos os tipos</option><option value="income">Receitas</option><option value="expense">Despesas</option></select></label>
+              <label><span class="sr-only">Filtrar por categoria</span><select id="filter-category"><option value="all">Todas categorias</option><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Educação</option><option>Trabalho</option><option>Outros</option></select></label>
+              <label><span class="sr-only">Ordenar lançamentos</span><select id="sort-transactions"><option value="newest">Mais recentes</option><option value="oldest">Mais antigos</option></select></label>
+            </div>
             <ul id="transactions-list" class="transactions-list" aria-live="polite"></ul>
             <div id="empty-transactions" class="empty-state">
               <span aria-hidden="true">＋</span><h3>Comece pelo primeiro lançamento</h3><p>Suas receitas e despesas aparecerão organizadas aqui.</p>
             </div>
+            <p id="no-results" class="no-results" hidden>Nenhum lançamento corresponde aos filtros escolhidos.</p>
           </div>
         </div>
       </div>
