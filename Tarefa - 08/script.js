@@ -3,6 +3,7 @@
 // Configurações, estado e referências do cadastro inicial de lançamentos.
 const STORAGE_KEY = "findash-transactions-v1";
 const BUDGET_STORAGE_KEY = "findash-budgets-v1";
+const THEME_STORAGE_KEY = "findash-theme-v1";
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const dateView = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
 const state = { transactions: [], budgets: [], editingId: null, editingBudgetCategory: null };
@@ -19,10 +20,12 @@ Object.assign(dom, { deleteDialog: document.querySelector("#delete-dialog"), del
 Object.assign(dom, { search: document.querySelector("#search-transactions"), filterType: document.querySelector("#filter-type"), filterCategory: document.querySelector("#filter-category"), sort: document.querySelector("#sort-transactions"), noResults: document.querySelector("#no-results") });
 Object.assign(dom, { budgetList: document.querySelector("#budget-list"), emptyBudgets: document.querySelector("#empty-budgets"), budgetReference: document.querySelector("#budget-reference"), openBudget: document.querySelector("#open-budget-modal"), budgetDialog: document.querySelector("#budget-dialog"), budgetForm: document.querySelector("#budget-form"), budgetCategory: document.querySelector("#budget-category"), budgetLimit: document.querySelector("#budget-limit"), budgetFeedback: document.querySelector("#budget-feedback"), cancelBudget: document.querySelector("#cancel-budget") });
 Object.assign(dom, { chart: document.querySelector("#expense-chart"), chartEmpty: document.querySelector("#chart-empty"), chartLegend: document.querySelector("#chart-legend") });
+Object.assign(dom, { themeToggle: document.querySelector("#theme-toggle") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
 function initializeApp() {
+  initializeTheme();
   initializeNavigation();
   if (!dom.form) return;
   state.transactions = loadTransactions();
@@ -40,7 +43,12 @@ function initializeApp() {
   dom.cancelBudget.addEventListener("click", () => dom.budgetDialog.close());
   dom.budgetForm.addEventListener("submit", saveBudget);
   window.addEventListener("resize", () => { clearTimeout(state.chartTimer); state.chartTimer = setTimeout(drawExpenseChart, 100); });
+  dom.themeToggle.addEventListener("click", toggleTheme);
 }
+
+function initializeTheme() { const saved = localStorage.getItem(THEME_STORAGE_KEY); const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; applyTheme(saved || preferred); }
+function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); }
+function applyTheme(theme) { document.documentElement.dataset.theme = theme; dom.themeToggle?.setAttribute("aria-pressed", String(theme === "dark")); dom.themeToggle?.querySelector(".sr-only") && (dom.themeToggle.querySelector(".sr-only").textContent = theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"); try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch {} drawExpenseChart(); }
 
 function initializeNavigation() {
   if (!dom.menuButton || !dom.navigation) return;

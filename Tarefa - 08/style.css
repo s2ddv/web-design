@@ -14,6 +14,10 @@
   --container: 1120px;
 }
 
+/* Variáveis específicas do modo escuro, ativadas pelo atributo da raiz. */
+[data-theme="dark"] { --ink: #e5f0e7; --muted: #afc0b3; --surface: #18231e; --canvas: #101814; --line: #33453a; --primary: #66bb92; --primary-dark: #91d8ad; --accent: #dff3a4; --shadow: 0 18px 50px rgba(0, 0, 0, .28); }
+[data-theme="dark"] .transactions-section, [data-theme="dark"] .budgets-section { background: #152019; } [data-theme="dark"] .transaction-form input, [data-theme="dark"] .transaction-form select, [data-theme="dark"] .filters input, [data-theme="dark"] .filters select, [data-theme="dark"] .modal-field input, [data-theme="dark"] .modal-field select, [data-theme="dark"] .icon-button { color: var(--ink); background: #202e26; border-color: var(--line); } [data-theme="dark"] .summary-card, [data-theme="dark"] .chart-card { background: #16221b; } [data-theme="dark"] .button-ghost { background: #202e26; }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; }
@@ -31,6 +35,7 @@ button { font: inherit; }
 .main-nav { display: flex; gap: 1.5rem; color: var(--muted); font-weight: 650; font-size: .92rem; }
 .main-nav a:hover, .main-nav a:focus-visible { color: var(--primary); }
 .menu-toggle { display: none; border: 0; background: transparent; color: var(--ink); font-size: 1.4rem; cursor: pointer; }
+.theme-toggle { margin-left: auto; min-width: 2.25rem; min-height: 2.25rem; border: 1px solid var(--line); border-radius: .65rem; color: var(--ink); background: var(--surface); cursor: pointer; }.theme-toggle:hover, .theme-toggle:focus-visible { outline: 3px solid rgba(21, 106, 80, .25); border-color: var(--primary); }
 
 .hero-section { padding: clamp(4.5rem, 10vw, 8.5rem) 0; }
 .hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 3rem; align-items: center; }
@@ -101,6 +106,7 @@ h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
 
 @media (max-width: 700px) {
   .menu-toggle { display: block; }
+  .theme-toggle { margin-left: auto; }
   .main-nav { display: none; position: absolute; left: 1.25rem; right: 1.25rem; top: 4.2rem; padding: 1rem; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow); }
   .main-nav.is-open { display: flex; }
   .hero-grid, .privacy-content, .feature-grid { grid-template-columns: 1fr; }
