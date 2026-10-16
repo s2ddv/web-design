@@ -45,7 +45,7 @@ function initializeApp() {
   dom.openBudget.addEventListener("click", openBudgetDialog);
   dom.cancelBudget.addEventListener("click", () => dom.budgetDialog.close());
   dom.budgetForm.addEventListener("submit", saveBudget);
-  window.addEventListener("resize", () => { clearTimeout(state.chartTimer); state.chartTimer = setTimeout(drawExpenseChart, 100); });
+  window.addEventListener("resize", scheduleChartRedraw);
   dom.themeToggle.addEventListener("click", toggleTheme);
   dom.restoreDemo.addEventListener("click", () => dom.demoDialog.showModal());
   dom.confirmDemo.addEventListener("click", restoreDemoData);
@@ -65,7 +65,10 @@ function initializeTheme() {
 
   applyTheme(savedTheme || preferred);
 }
-function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); }
+function toggleTheme() {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+}
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   dom.themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
@@ -309,11 +312,61 @@ function createTransactionItem(transaction) {
   details.append(description, meta); item.append(icon, details, amount, actions); return item;
 }
 
-function createActionButton(label, icon, action, extraClass = "") { const button = document.createElement("button"); button.type = "button"; button.className = `icon-button ${extraClass}`; button.setAttribute("aria-label", label); button.textContent = icon; button.addEventListener("click", action); return button; }
-function startEditing(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.editingId = id; dom.type.value = item.type; dom.description.value = item.description; dom.amount.value = (item.amountCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 }); dom.category.value = item.category; dom.date.value = item.date; dom.form.querySelector("button[type='submit']").textContent = "Salvar alterações"; dom.cancelEdit.hidden = false; dom.description.focus(); }
-function requestDeletion(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.deletingId = id; dom.deleteMessage.textContent = `“${item.description}” será removido permanentemente.`; dom.deleteDialog.showModal(); }
-function deleteSelectedTransaction() { if (!state.deletingId) return; state.transactions = state.transactions.filter(item => item.id !== state.deletingId); state.deletingId = null; saveTransactions(); renderTransactions(); updateIndicators(); renderBudgets(); drawExpenseChart(); showFeedback("Lançamento excluído com sucesso."); }
-function resetTransactionForm() { state.editingId = null; dom.form.reset(); dom.type.value = "expense"; dom.date.value = todayISO(); dom.form.querySelector("button[type='submit']").textContent = "Adicionar lançamento"; dom.cancelEdit.hidden = true; }
+function createActionButton(label, icon, action, extraClass = "") {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `icon-button ${extraClass}`;
+  button.setAttribute("aria-label", label);
+  button.textContent = icon;
+  button.addEventListener("click", action);
+  return button;
+}
+
+function startEditing(id) {
+  const item = state.transactions.find(transaction => transaction.id === id);
+  if (!item) return;
+
+  state.editingId = id;
+  dom.type.value = item.type;
+  dom.description.value = item.description;
+  dom.amount.value = (item.amountCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+  dom.category.value = item.category;
+  dom.date.value = item.date;
+  dom.form.querySelector("button[type='submit']").textContent = "Salvar alterações";
+  dom.cancelEdit.hidden = false;
+  dom.description.focus();
+}
+
+function requestDeletion(id) {
+  const item = state.transactions.find(transaction => transaction.id === id);
+  if (!item) return;
+
+  state.deletingId = id;
+  dom.deleteMessage.textContent = `“${item.description}” será removido permanentemente.`;
+  dom.deleteDialog.showModal();
+}
+
+function deleteSelectedTransaction() {
+  if (!state.deletingId) return;
+
+  state.transactions = state.transactions.filter(item => item.id !== state.deletingId);
+  state.deletingId = null;
+  saveTransactions();
+  renderTransactions();
+  updateIndicators();
+  renderBudgets();
+  drawExpenseChart();
+  showFeedback("Lançamento excluído com sucesso.");
+}
+
+function resetTransactionForm() {
+  state.editingId = null;
+  dom.form.reset();
+  dom.type.value = "expense";
+  dom.date.value = todayISO();
+  dom.form.querySelector("button[type='submit']").textContent = "Adicionar lançamento";
+  dom.cancelEdit.hidden = true;
+}
 
 function isTransactionShape(item) { return item && typeof item.id === "string" && ["income", "expense"].includes(item.type) && typeof item.description === "string" && Number.isSafeInteger(item.amountCents) && item.amountCents > 0 && typeof item.category === "string" && isValidISODate(item.date); }
 function loadTransactions() {
@@ -363,13 +416,167 @@ function saveBudgets() {
   }
 }
 
-function currentMonthKey() { return todayISO().slice(0, 7); }
-function openBudgetDialog() { state.editingBudgetCategory = null; dom.budgetForm.reset(); dom.budgetFeedback.textContent = ""; dom.budgetDialog.showModal(); dom.budgetCategory.focus(); }
-function saveBudget(event) { event.preventDefault(); const category = dom.budgetCategory.value; const limitCents = parseAmountToCents(dom.budgetLimit.value); if (!category || !limitCents) { dom.budgetFeedback.textContent = "Escolha uma categoria e informe um limite válido."; return; } const index = state.budgets.findIndex(item => item.category === category); if (index >= 0) state.budgets[index].limitCents = limitCents; else state.budgets.push({ category, limitCents }); saveBudgets(); dom.budgetDialog.close(); renderBudgets(); showFeedback("Orçamento salvo com sucesso."); }
-function getCurrentMonthSpending(category) { return state.transactions.filter(item => item.type === "expense" && item.category === category && item.date.startsWith(currentMonthKey())).reduce((total, item) => total + item.amountCents, 0); }
-function renderBudgets() { if (!dom.budgetList) return; dom.budgetList.replaceChildren(); dom.budgetReference.textContent = `Referência: ${new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(new Date(`${currentMonthKey()}-01T12:00:00`))}`; state.budgets.forEach(budget => dom.budgetList.append(createBudgetCard(budget))); dom.emptyBudgets.hidden = state.budgets.length > 0; }
-function createBudgetCard(budget) { const spent = getCurrentMonthSpending(budget.category); const percent = (spent / budget.limitCents) * 100; const card = document.createElement("article"); card.className = `budget-card ${percent >= 100 ? "exceeded" : percent >= 80 ? "warning" : ""}`; const heading = document.createElement("h3"); heading.textContent = budget.category; const value = document.createElement("strong"); value.textContent = `${formatMoney(spent)} de ${formatMoney(budget.limitCents)}`; const bar = document.createElement("div"); bar.className = "budget-bar"; const fill = document.createElement("span"); fill.style.width = `${Math.min(100, percent)}%`; bar.append(fill); const status = document.createElement("p"); status.textContent = percent >= 100 ? "Limite ultrapassado" : percent >= 80 ? "Próximo do limite" : `${Math.round(percent)}% utilizado`; const actions = document.createElement("div"); actions.className = "budget-actions"; actions.append(createActionButton("Editar orçamento", "✎", () => { dom.budgetCategory.value = budget.category; dom.budgetLimit.value = (budget.limitCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 }); dom.budgetDialog.showModal(); }), createActionButton("Excluir orçamento", "×", () => { state.budgets = state.budgets.filter(item => item.category !== budget.category); saveBudgets(); renderBudgets(); }, "delete")); card.append(heading, value, bar, status, actions); return card; }
+function currentMonthKey() {
+  return todayISO().slice(0, 7);
+}
 
-function expenseByCategory() { return state.transactions.filter(item => item.type === "expense" && item.date.startsWith(currentMonthKey())).reduce((map, item) => { map[item.category] = (map[item.category] || 0) + item.amountCents; return map; }, {}); }
-function drawExpenseChart() { if (!dom.chart) return; const entries = Object.entries(expenseByCategory()); dom.chartEmpty.hidden = entries.length > 0; dom.chart.hidden = !entries.length; dom.chartLegend.replaceChildren(); if (!entries.length) return; const colors = ["#156a50", "#bb7615", "#b23e38", "#426cac", "#7256a7", "#158a92", "#a64f72", "#576b5d"]; const width = dom.chart.clientWidth; const height = 280; const scale = window.devicePixelRatio || 1; dom.chart.width = width * scale; dom.chart.height = height * scale; const ctx = dom.chart.getContext("2d"); ctx.scale(scale, scale); ctx.clearRect(0, 0, width, height); const max = Math.max(...entries.map(([, value]) => value)); const barWidth = Math.min(80, (width - 60) / entries.length - 15); entries.forEach(([category, value], index) => { const x = 42 + index * ((width - 60) / entries.length) + 5; const chartHeight = (value / max) * 190; const y = 225 - chartHeight; ctx.fillStyle = colors[index % colors.length]; ctx.fillRect(x, y, barWidth, chartHeight); ctx.fillStyle = "#607067"; ctx.font = "12px system-ui"; ctx.fillText(formatMoney(value), x, y - 8); ctx.save(); ctx.translate(x + barWidth / 2, 247); ctx.rotate(-0.35); ctx.fillText(category.slice(0, 12), 0, 0); ctx.restore(); const legend = document.createElement("li"); const dot = document.createElement("span"); dot.className = "legend-dot"; dot.style.background = colors[index % colors.length]; legend.append(dot, document.createTextNode(category)); dom.chartLegend.append(legend); }); }
+function openBudgetDialog() {
+  state.editingBudgetCategory = null;
+  dom.budgetForm.reset();
+  dom.budgetFeedback.textContent = "";
+  dom.budgetDialog.showModal();
+  dom.budgetCategory.focus();
+}
+
+function saveBudget(event) {
+  event.preventDefault();
+  const category = dom.budgetCategory.value;
+  const limitCents = parseAmountToCents(dom.budgetLimit.value);
+
+  if (!category || !limitCents) {
+    dom.budgetFeedback.textContent = "Escolha uma categoria e informe um limite válido.";
+    return;
+  }
+
+  const index = state.budgets.findIndex(item => item.category === category);
+  if (index >= 0) state.budgets[index].limitCents = limitCents;
+  else state.budgets.push({ category, limitCents });
+
+  saveBudgets();
+  dom.budgetDialog.close();
+  renderBudgets();
+  showFeedback("Orçamento salvo com sucesso.");
+}
+
+function getCurrentMonthSpending(category) {
+  return state.transactions
+    .filter(item => item.type === "expense" && item.category === category && item.date.startsWith(currentMonthKey()))
+    .reduce((total, item) => total + item.amountCents, 0);
+}
+
+function renderBudgets() {
+  if (!dom.budgetList) return;
+
+  const month = new Date(`${currentMonthKey()}-01T12:00:00`);
+  const monthLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(month);
+
+  dom.budgetList.replaceChildren();
+  dom.budgetReference.textContent = `Referência: ${monthLabel}`;
+  state.budgets.forEach(budget => dom.budgetList.append(createBudgetCard(budget)));
+  dom.emptyBudgets.hidden = state.budgets.length > 0;
+}
+
+function createBudgetCard(budget) {
+  const spent = getCurrentMonthSpending(budget.category);
+  const percent = (spent / budget.limitCents) * 100;
+  const card = document.createElement("article");
+  const level = percent >= 100 ? "exceeded" : percent >= 80 ? "warning" : "";
+  card.className = `budget-card ${level}`;
+
+  const heading = document.createElement("h3");
+  heading.textContent = budget.category;
+
+  const value = document.createElement("strong");
+  value.textContent = `${formatMoney(spent)} de ${formatMoney(budget.limitCents)}`;
+
+  const bar = document.createElement("div");
+  bar.className = "budget-bar";
+  const fill = document.createElement("span");
+  fill.style.width = `${Math.min(100, percent)}%`;
+  bar.append(fill);
+
+  const status = document.createElement("p");
+  status.textContent = percent >= 100 ? "Limite ultrapassado" : percent >= 80 ? "Próximo do limite" : `${Math.round(percent)}% utilizado`;
+
+  const actions = document.createElement("div");
+  actions.className = "budget-actions";
+  actions.append(createActionButton("Editar orçamento", "✎", () => editBudget(budget)));
+  actions.append(createActionButton("Excluir orçamento", "×", () => deleteBudget(budget.category), "delete"));
+
+  card.append(heading, value, bar, status, actions);
+  return card;
+}
+
+function editBudget(budget) {
+  dom.budgetCategory.value = budget.category;
+  dom.budgetLimit.value = (budget.limitCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+  dom.budgetDialog.showModal();
+}
+
+function deleteBudget(category) {
+  state.budgets = state.budgets.filter(item => item.category !== category);
+  saveBudgets();
+  renderBudgets();
+}
+
+function expenseByCategory() {
+  return state.transactions
+    .filter(item => item.type === "expense" && item.date.startsWith(currentMonthKey()))
+    .reduce((categories, item) => {
+      categories[item.category] = (categories[item.category] || 0) + item.amountCents;
+      return categories;
+    }, {});
+}
+
+function scheduleChartRedraw() {
+  clearTimeout(state.chartTimer);
+  state.chartTimer = setTimeout(drawExpenseChart, 100);
+}
+
+// O gráfico e os cartões de orçamento compartilham a mesma referência mensal.
+function drawExpenseChart() {
+  if (!dom.chart) return;
+
+  const entries = Object.entries(expenseByCategory());
+  dom.chartEmpty.hidden = entries.length > 0;
+  dom.chart.hidden = !entries.length;
+  dom.chartLegend.replaceChildren();
+  if (!entries.length) return;
+
+  const colors = ["#156a50", "#bb7615", "#b23e38", "#426cac", "#7256a7", "#158a92", "#a64f72", "#576b5d"];
+  const width = dom.chart.clientWidth;
+  const height = 280;
+  const scale = window.devicePixelRatio || 1;
+
+  dom.chart.width = width * scale;
+  dom.chart.height = height * scale;
+
+  const context = dom.chart.getContext("2d");
+  context.scale(scale, scale);
+  context.clearRect(0, 0, width, height);
+
+  const max = Math.max(...entries.map(([, value]) => value));
+  const spacing = (width - 60) / entries.length;
+  const barWidth = Math.min(80, spacing - 15);
+
+  entries.forEach(([category, value], index) => {
+    const color = colors[index % colors.length];
+    const x = 42 + index * spacing + 5;
+    const chartHeight = (value / max) * 190;
+    const y = 225 - chartHeight;
+
+    context.fillStyle = color;
+    context.fillRect(x, y, barWidth, chartHeight);
+    context.fillStyle = "#607067";
+    context.font = "12px system-ui";
+    context.fillText(formatMoney(value), x, y - 8);
+
+    context.save();
+    context.translate(x + barWidth / 2, 247);
+    context.rotate(-0.35);
+    context.fillText(category.slice(0, 12), 0, 0);
+    context.restore();
+
+    appendChartLegend(category, color);
+  });
+}
+
+function appendChartLegend(category, color) {
+  const legend = document.createElement("li");
+  const dot = document.createElement("span");
+  dot.className = "legend-dot";
+  dot.style.background = color;
+  legend.append(dot, document.createTextNode(category));
+  dom.chartLegend.append(legend);
+}
 function showFeedback(message, isError = false) { dom.feedback.textContent = message; dom.feedback.classList.toggle("is-error", isError); dom.feedback.hidden = false; clearTimeout(showFeedback.timer); showFeedback.timer = setTimeout(() => { dom.feedback.hidden = true; }, 4500); }
