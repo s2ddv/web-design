@@ -42,7 +42,7 @@ Tarefa - 08/
 ├── style.css
 ├── script.js
 ├── README.md
-└── DOCUMENTACAO-ACADEMICA.md
+└── evidencias/
 ```
 
 ## Funcionalidades
@@ -161,6 +161,50 @@ O tema respeita redução de movimento no sistema.
 - `0.10.0` exportação de dados em JSON.
 - `0.11.0` central de ajuda e guia financeiro.
 - `1.0.0` documentação e entrega final.
+- `1.0.1` tratamento de falhas de armazenamento local e continuidade em memória.
+- `1.0.2` geração de datas e períodos financeiros no fuso local.
+- `1.0.3` revisão de legibilidade, comentários e organização dos arquivos principais.
+- `1.0.4` revisão da documentação acadêmica e registro das evidências.
+
+## Manutenção pós-1.0.0
+
+### Correções aplicadas
+
+- A leitura da preferência de tema agora é protegida contra indisponibilidade do `localStorage`; nesse caso, o tema preferido pelo sistema é aplicado sem interromper a inicialização.
+- A escrita do tema, dos lançamentos e dos orçamentos é tratada com recuperação. Quando a persistência falha, os dados continuam disponíveis durante a sessão e a interface informa a limitação.
+- A data usada nos campos e na referência mensal passou a ser montada com `getFullYear()`, `getMonth()` e `getDate()`. Assim, o resultado não é deslocado pelo horário UTC.
+- Orçamentos e gráfico usam a mesma chave mensal local, sem alterar o significado de registros já existentes.
+
+### Verificações executadas
+
+- `node --check script.js`: concluído sem erros de sintaxe.
+- `git diff --check`: concluído sem erros de espaços em branco.
+- Datas controladas: validação do formato local para fevereiro bissexto e não bissexto, viradas de mês e de ano.
+- Inspeção da prévia local: formulário, filtros, resumo, orçamentos, gráfico, exportação, ajuda e controles de tema foram encontrados na árvore de acessibilidade.
+- A referência exibida na prévia foi `outubro de 2026`, coerente com a data local observada de `2026-10-16`.
+
+O clique automatizado para alternar o tema excedeu o tempo de resposta do navegador. Portanto, a alternância visual e as capturas abaixo permanecem como verificação manual pendente; elas não são declaradas como concluídas.
+
+## Evidências para o Canvas
+
+O diretório [`evidencias/`](evidencias/) contém a relação de capturas a inserir. As imagens devem ser feitas na versão local desta entrega, usando somente os dados demonstrativos e sem expor dados financeiros pessoais.
+
+Capturas previstas:
+
+1. Tela inicial em desktop.
+2. Cadastro e listagem de transações demonstrativas.
+3. Indicadores financeiros.
+4. Orçamentos mensais.
+5. Gráfico financeiro.
+6. Tema escuro.
+7. Central de ajuda.
+8. Layout em celular.
+
+## Documentação acadêmica para entrega
+
+Este README consolida a documentação final da atividade: identificação, objetivos, tecnologias, estrutura, funcionalidades, conceitos de JavaScript, histórico Git, repositório, testes e evidências. Os códigos completos estão em `index.html`, `style.css` e `script.js`, todos na pasta desta tarefa.
+
+Para a submissão no Canvas, inclua as imagens pendentes indicadas em `evidencias/` e cite este repositório como fonte do código. O arquivo acadêmico separado foi removido intencionalmente do versionamento, conforme orientação do autor.
 
 ## Repositório
 
