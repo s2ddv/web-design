@@ -87,6 +87,40 @@
         <p>O FinDash funciona inteiramente no navegador. Nesta versão, não há login, banco de dados remoto ou integração bancária. Você controla os dados exibidos na sua tela.</p>
       </div>
     </section>
+
+    <!-- Área de lançamentos: a base de dados financeira da aplicação. -->
+    <section id="transacoes" class="transactions-section" aria-labelledby="transactions-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">LANÇAMENTOS</p><h2 id="transactions-title">Registre o que entra e o que sai.</h2></div>
+          <p>Os valores são guardados somente neste navegador.</p>
+        </div>
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+        <div class="transactions-layout">
+          <form id="transaction-form" class="transaction-form" novalidate>
+            <h3>Novo lançamento</h3>
+            <p class="form-intro">Informe os dados para adicionar à sua lista.</p>
+            <div class="field-row">
+              <label><span>Tipo</span><select id="transaction-type" name="type" required><option value="expense">Despesa</option><option value="income">Receita</option></select></label>
+              <label><span>Data</span><input id="transaction-date" name="date" type="date" required></label>
+            </div>
+            <label><span>Descrição</span><input id="transaction-description" name="description" type="text" maxlength="80" placeholder="Ex.: Mercado semanal" required></label>
+            <div class="field-row">
+              <label><span>Valor (R$)</span><input id="transaction-amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" required></label>
+              <label><span>Categoria</span><select id="transaction-category" name="category" required><option value="">Selecione</option><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Educação</option><option>Trabalho</option><option>Outros</option></select></label>
+            </div>
+            <div class="form-actions"><button class="button button-primary" type="submit">Adicionar lançamento</button><button id="cancel-edit" class="button button-ghost" type="button" hidden>Cancelar edição</button></div>
+          </form>
+          <div class="transactions-panel">
+            <div class="panel-title"><div><h3>Últimos lançamentos</h3><p id="transactions-count">0 registros</p></div></div>
+            <ul id="transactions-list" class="transactions-list" aria-live="polite"></ul>
+            <div id="empty-transactions" class="empty-state">
+              <span aria-hidden="true">＋</span><h3>Comece pelo primeiro lançamento</h3><p>Suas receitas e despesas aparecerão organizadas aqui.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
