@@ -27,6 +27,7 @@
         <a href="#inicio">Início</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#privacidade">Privacidade</a>
+        <button id="open-help" class="nav-help" type="button">Ajuda</button>
       </nav>
     </div>
   </header>
@@ -166,5 +167,335 @@
     <form id="budget-form" class="modal-content" novalidate><p class="eyebrow">PLANEJAMENTO MENSAL</p><h2 id="budget-dialog-title">Definir orçamento</h2><p>O limite será repetido a cada mês para a categoria escolhida.</p><label class="modal-field"><span>Categoria</span><select id="budget-category" required><option value="">Selecione</option><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Educação</option><option>Trabalho</option><option>Outros</option></select></label><label class="modal-field"><span>Limite mensal (R$)</span><input id="budget-limit" type="text" inputmode="decimal" placeholder="0,00" required></label><p id="budget-feedback" class="modal-feedback" role="status"></p><div class="modal-actions"><button id="cancel-budget" class="button button-ghost" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar orçamento</button></div></form>
   </dialog>
   <dialog id="demo-dialog" class="modal-dialog" aria-labelledby="demo-dialog-title"><form method="dialog" class="modal-content"><p class="eyebrow">DADOS DEMONSTRATIVOS</p><h2 id="demo-dialog-title">Substituir seus dados?</h2><p>Os lançamentos e orçamentos atuais serão substituídos por exemplos fictícios.</p><div class="modal-actions"><button class="button button-ghost" value="cancel">Cancelar</button><button id="confirm-demo" class="button button-danger" value="confirm">Restaurar exemplos</button></div></form></dialog>
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+    <div class="help-shell">
+      <aside class="help-sidebar">
+        <div class="help-brand"><span class="brand-mark" aria-hidden="true">F</span><span>Central de ajuda</span></div>
+        <nav class="help-nav" aria-label="Seções da ajuda">
+          <a href="#help-start">Começar</a>
+          <a href="#help-transactions">Lançamentos</a>
+          <a href="#help-summary">Indicadores</a>
+          <a href="#help-budgets">Orçamentos</a>
+          <a href="#help-chart">Gráfico</a>
+          <a href="#help-data">Dados e privacidade</a>
+          <a href="#help-faq">Perguntas frequentes</a>
+        </nav>
+        <p>FinDash usa o armazenamento local deste navegador.</p>
+      </aside>
+      <div class="help-main">
+        <header class="help-header"><div><p class="eyebrow">GUIA FINDASH</p><h2 id="help-title">Organize seu dinheiro com contexto.</h2></div><button id="close-help" class="close-help" type="button" aria-label="Fechar central de ajuda">×</button></header>
+        <div class="help-content">
+          <section id="help-start" class="help-section">
+            <p class="help-kicker">COMEÇAR</p>
+            <h3>Um caminho simples para construir clareza.</h3>
+            <p>O FinDash foi pensado para registrar acontecimentos financeiros reais e transformá-los em uma visão organizada. Comece por um lançamento pequeno; a consistência vale mais do que tentar reconstruir toda a vida financeira de uma vez.</p>
+            <ol class="guide-steps">
+              <li><strong>Registre uma entrada.</strong><span>Inclua salário, trabalho pontual, reembolso ou qualquer valor que entrou.</span></li>
+              <li><strong>Registre uma saída.</strong><span>Anote a despesa com uma descrição que faça sentido para você.</span></li>
+              <li><strong>Leia o resumo.</strong><span>Compare receitas, despesas, saldo e taxa de economia.</span></li>
+              <li><strong>Planeje o mês.</strong><span>Defina limites para categorias onde você deseja ter mais atenção.</span></li>
+            </ol>
+            <div class="help-note"><strong>Dica prática</strong><p>Faça os lançamentos no mesmo dia em que acontecem. Assim, os indicadores e o gráfico representam melhor sua rotina.</p></div>
+          </section>
+          <section id="help-transactions" class="help-section">
+            <p class="help-kicker">LANÇAMENTOS</p>
+            <h3>Como cadastrar receitas e despesas.</h3>
+            <p>Na área de lançamentos, escolha o tipo, informe uma descrição breve, valor, categoria e data. O formulário confirma se a informação está completa antes de salvar.</p>
+            <div class="help-grid">
+              <article><h4>Tipo</h4><p>Use <em>Receita</em> para valores que entram e <em>Despesa</em> para valores que saem. Essa escolha influencia todos os cálculos.</p></article>
+              <article><h4>Descrição</h4><p>Prefira termos específicos, como “Mercado do bairro” ou “Freelance de setembro”, para facilitar a pesquisa posterior.</p></article>
+              <article><h4>Valor</h4><p>Você pode digitar <code>12,50</code>, <code>12.50</code> ou <code>1.234,56</code>. O FinDash armazena o resultado em centavos.</p></article>
+              <article><h4>Data</h4><p>A data precisa existir no calendário. Ela define o período dos orçamentos e do gráfico mensal.</p></article>
+            </div>
+            <h4>Editar ou excluir</h4>
+            <p>Em cada item da lista, use o botão com lápis para trazer seus dados ao formulário e salvar uma atualização. O botão de exclusão sempre abre uma confirmação; cancelar mantém o lançamento intacto.</p>
+            <h4>Encontrar um lançamento</h4>
+            <p>A pesquisa procura tanto na descrição quanto na categoria. Ela ignora maiúsculas, minúsculas e acentos: pesquisar por “alimentacao” encontra “Alimentação”. Combine-a com tipo, categoria e ordenação para chegar ao resultado desejado.</p>
+          </section>
+          <section id="help-summary" class="help-section">
+            <p class="help-kicker">INDICADORES</p>
+            <h3>Como interpretar a visão geral.</h3>
+            <p>Os quatro cartões de resumo consideram todos os lançamentos cadastrados no navegador, e não apenas o mês corrente. Isso deixa claro o período apresentado.</p>
+            <dl class="metric-list">
+              <div><dt>Receitas</dt><dd>Soma de todos os lançamentos classificados como receita.</dd></div>
+              <div><dt>Despesas</dt><dd>Soma de todos os lançamentos classificados como despesa.</dd></div>
+              <div><dt>Saldo</dt><dd>Resultado de receitas menos despesas. Um saldo negativo merece atenção.</dd></div>
+              <div><dt>Lançamentos</dt><dd>Quantidade total de registros guardados no FinDash.</dd></div>
+              <div><dt>Taxa de economia</dt><dd>Calculada como (receitas − despesas) ÷ receitas × 100. Sem receita, ela não é exibida.</dd></div>
+            </dl>
+            <div class="help-note"><strong>Leitura responsável</strong><p>Um único indicador não substitui a análise do contexto. Use o histórico, os filtros e seu planejamento pessoal antes de tomar decisões financeiras importantes.</p></div>
+          </section>
+          <section id="help-budgets" class="help-section">
+            <p class="help-kicker">ORÇAMENTOS</p>
+            <h3>Planejamento por categoria, todo mês.</h3>
+            <p>Um orçamento é um limite mensal recorrente. Ao definir, por exemplo, R$ 900,00 para Alimentação, o FinDash compara esse valor com as despesas daquela categoria no mês de referência atual.</p>
+            <div class="callout-list">
+              <div><span aria-hidden="true">1</span><p><strong>Defina um limite realista.</strong> Use sua rotina recente como referência e reserve margem para oscilações.</p></div>
+              <div><span aria-hidden="true">2</span><p><strong>Acompanhe a barra.</strong> A cor muda quando o consumo se aproxima ou ultrapassa o limite.</p></div>
+              <div><span aria-hidden="true">3</span><p><strong>Ajuste quando necessário.</strong> Use o lápis para revisar o limite; use a exclusão para remover uma categoria do planejamento.</p></div>
+            </div>
+            <p>Despesas de meses diferentes não são misturadas. Ao virar o mês, os limites continuam disponíveis, mas o valor usado passa a considerar apenas as novas despesas daquele período.</p>
+          </section>
+          <section id="help-chart" class="help-section">
+            <p class="help-kicker">GRÁFICO</p>
+            <h3>O que o gráfico mostra.</h3>
+            <p>O gráfico de barras usa Canvas e agrupa exclusivamente as despesas do mês atual por categoria. Cada cor representa uma categoria e a altura de cada barra mostra seu valor relativo.</p>
+            <ul class="check-list">
+              <li>Registre uma despesa com data no mês atual para ver uma barra.</li>
+              <li>Edite ou exclua uma despesa para redesenhar automaticamente o gráfico.</li>
+              <li>Redimensione a tela: o desenho é recalculado para se ajustar ao espaço disponível.</li>
+              <li>Use a legenda abaixo do gráfico para identificar as categorias.</li>
+            </ul>
+            <p>Se não houver despesas no mês atual, o FinDash exibe uma mensagem em vez de um gráfico vazio.</p>
+          </section>
+          <section id="help-data" class="help-section">
+            <p class="help-kicker">DADOS E PRIVACIDADE</p>
+            <h3>Onde ficam suas informações.</h3>
+            <p>O FinDash não possui conta, login, servidor ou integração bancária. Lançamentos, orçamentos e preferência de tema ficam no <em>localStorage</em> do navegador que você está usando.</p>
+            <div class="privacy-guide">
+              <article><h4>O que é salvo</h4><p>Descrição, tipo, categoria, data e valor em centavos de cada lançamento; categoria e limite em centavos de cada orçamento; preferência de tema.</p></article>
+              <article><h4>O que não é enviado</h4><p>O site não transmite dados financeiros para um servidor, não usa banco remoto e não acessa sua conta bancária.</p></article>
+              <article><h4>Exportação</h4><p>O botão Exportar dados cria um arquivo JSON local com metadados, transações e orçamentos. A exportação não envia nada.</p></article>
+              <article><h4>Cuidados</h4><p>Limpar dados do navegador pode apagar o armazenamento local. Exporte uma cópia se quiser preservar informações importantes.</p></article>
+            </div>
+            <h4>Dados demonstrativos</h4>
+            <p>O botão Restaurar exemplos carrega lançamentos e orçamentos fictícios para exploração da interface. Ele pede confirmação porque substitui os registros atuais.</p>
+          </section>
+          <section id="help-faq" class="help-section">
+            <p class="help-kicker">PERGUNTAS FREQUENTES</p>
+            <h3>Dúvidas rápidas.</h3>
+            <div class="faq-list">
+              <details><summary>O FinDash funciona sem internet?</summary><p>Sim. Como a aplicação usa recursos nativos do navegador e armazenamento local, os dados já salvos continuam acessíveis sem conexão.</p></details>
+              <details><summary>Posso cadastrar valores negativos?</summary><p>Não. O tipo do lançamento informa se é receita ou despesa; o campo de valor aceita apenas números positivos.</p></details>
+              <details><summary>Por que meu orçamento está zerado?</summary><p>O uso do orçamento só conta despesas da mesma categoria cujo mês e ano sejam iguais aos do mês atual.</p></details>
+              <details><summary>Por que a taxa de economia mostra um traço?</summary><p>Ela depende de receitas registradas. Sem uma receita, não existe base para calcular a proporção.</p></details>
+              <details><summary>Posso importar um arquivo JSON?</summary><p>Não nesta versão. O FinDash oferece somente exportação para manter o fluxo simples e local.</p></details>
+              <details><summary>O tema permanece depois de fechar a página?</summary><p>Sim. Sua escolha entre tema claro e escuro fica salva neste navegador.</p></details>
+              <details><summary>Como apagar todos os meus dados?</summary><p>Esta interface não tem uma limpeza global. Você pode excluir lançamentos e orçamentos individualmente ou limpar os dados do site nas configurações do navegador.</p></details>
+            </div>
+          </section>
+          <section id="help-routine" class="help-section">
+            <p class="help-kicker">ROTINA FINANCEIRA</p>
+            <h3>Transforme registros em uma rotina útil.</h3>
+            <p>Uma ferramenta só ajuda quando se torna compreensível no dia a dia. Use estas sugestões como um ponto de partida e adapte a frequência às suas necessidades.</p>
+            <div class="routine-grid">
+              <article>
+                <span>Diariamente</span>
+                <h4>Registre o essencial</h4>
+                <p>Anote gastos e entradas relevantes logo após acontecerem. O registro imediato reduz esquecimento e melhora a qualidade do histórico.</p>
+              </article>
+              <article>
+                <span>Semanalmente</span>
+                <h4>Revise categorias</h4>
+                <p>Use os filtros para observar quais categorias concentram despesas e verificar se as descrições estão claras.</p>
+              </article>
+              <article>
+                <span>Mensalmente</span>
+                <h4>Reveja limites</h4>
+                <p>Compare os orçamentos com as despesas do mês. Atualize os limites se sua realidade mudou de forma consistente.</p>
+              </article>
+            </div>
+            <h4>Antes de encerrar um mês</h4>
+            <ul class="check-list">
+              <li>Confira se receitas e despesas importantes foram registradas.</li>
+              <li>Observe se alguma categoria ultrapassou o orçamento.</li>
+              <li>Leia a taxa de economia junto com seu contexto pessoal.</li>
+              <li>Exporte um JSON se quiser guardar uma cópia do período.</li>
+            </ul>
+          </section>
+          <section id="help-accessibility" class="help-section">
+            <p class="help-kicker">ACESSIBILIDADE</p>
+            <h3>Recursos para uma navegação mais confortável.</h3>
+            <p>O FinDash busca usar elementos HTML semânticos e controles reconhecíveis para tornar o fluxo mais previsível em diferentes dispositivos.</p>
+            <div class="accessibility-list">
+              <article>
+                <h4>Teclado</h4>
+                <p>Botões, campos, links, filtros, modais e perguntas frequentes podem ser alcançados com a tecla Tab. O foco visível indica o controle ativo.</p>
+              </article>
+              <article>
+                <h4>Leitores de tela</h4>
+                <p>Rótulos de formulário, regiões de status, descrições de gráfico e nomes acessíveis de ações ajudam a interpretar a interface.</p>
+              </article>
+              <article>
+                <h4>Movimento reduzido</h4>
+                <p>O CSS respeita a preferência do sistema para reduzir animações de rolagem e transições quando ela está ativada.</p>
+              </article>
+              <article>
+                <h4>Telas pequenas</h4>
+                <p>As grades se reorganizam em uma coluna e a central de ajuda ocupa a tela para manter o conteúdo legível em celulares.</p>
+              </article>
+            </div>
+            <div class="help-note">
+              <strong>Atalho útil</strong>
+              <p>Ao abrir a central de ajuda, o botão de fechar recebe o foco. Ao fechar, o foco retorna ao botão que abriu a central.</p>
+            </div>
+          </section>
+          <section id="help-limits" class="help-section">
+            <p class="help-kicker">ESCOPO DESTA VERSÃO</p>
+            <h3>O que o FinDash faz e o que não faz.</h3>
+            <p>O objetivo acadêmico desta aplicação é demonstrar um painel financeiro pessoal utilizando HTML, CSS e JavaScript puro. Algumas escolhas mantêm a experiência local e transparente.</p>
+            <div class="scope-table" role="table" aria-label="Escopo da aplicação">
+              <div role="row" class="scope-heading">
+                <span role="columnheader">Disponível</span>
+                <span role="columnheader">Não incluído nesta versão</span>
+              </div>
+              <div role="row">
+                <span role="cell">Lançamentos de receitas e despesas</span>
+                <span role="cell">Sincronização entre dispositivos</span>
+              </div>
+              <div role="row">
+                <span role="cell">Orçamentos mensais por categoria</span>
+                <span role="cell">Importação de arquivos</span>
+              </div>
+              <div role="row">
+                <span role="cell">Exportação local em JSON</span>
+                <span role="cell">Banco de dados remoto</span>
+              </div>
+              <div role="row">
+                <span role="cell">Tema claro e escuro persistente</span>
+                <span role="cell">Autenticação ou perfis</span>
+              </div>
+              <div role="row">
+                <span role="cell">Gráfico Canvas mensal</span>
+                <span role="cell">Integração bancária</span>
+              </div>
+            </div>
+            <p>Por não haver integração bancária ou envio de dados, todo lançamento precisa ser cadastrado manualmente. Essa característica também ajuda a preservar a privacidade no contexto atual.</p>
+          </section>
+          <section id="help-troubleshooting" class="help-section">
+            <p class="help-kicker">SOLUÇÃO DE DÚVIDAS</p>
+            <h3>Quando algo não parecer certo.</h3>
+            <div class="troubleshooting">
+              <article>
+                <h4>“O valor não foi aceito”</h4>
+                <p>Use somente números positivos e um separador decimal. Exemplos válidos: 25, 25,50, 25.50 e 1.234,56.</p>
+              </article>
+              <article>
+                <h4>“A data não salva”</h4>
+                <p>Escolha uma data existente no campo de calendário. Datas como 31 de fevereiro são rejeitadas pela validação.</p>
+              </article>
+              <article>
+                <h4>“Não encontro um lançamento”</h4>
+                <p>Remova os filtros, limpe a pesquisa e escolha “Todos os tipos” e “Todas categorias” antes de buscar novamente.</p>
+              </article>
+              <article>
+                <h4>“O gráfico não aparece”</h4>
+                <p>Confirme se existe ao menos uma despesa datada no mês atual. Receitas e despesas de meses anteriores não entram nele.</p>
+              </article>
+              <article>
+                <h4>“Meus dados sumiram”</h4>
+                <p>O armazenamento local pode ser apagado pelas configurações do navegador, por modo privado ou por limpeza de dados. Use a exportação como cópia preventiva.</p>
+              </article>
+              <article>
+                <h4>“O tema voltou ao anterior”</h4>
+                <p>Verifique se o navegador está permitindo dados locais para esta página. Sem armazenamento, a preferência não pode ser mantida.</p>
+              </article>
+            </div>
+          </section>
+          <section id="help-glossary" class="help-section">
+            <p class="help-kicker">GLOSSÁRIO</p>
+            <h3>Termos usados no painel.</h3>
+            <p>Esta referência curta ajuda a manter a leitura dos recursos consistente.</p>
+            <dl class="glossary-list">
+              <div>
+                <dt>Receita</dt>
+                <dd>Valor que entra no seu fluxo financeiro, como salário, venda, reembolso ou trabalho pontual.</dd>
+              </div>
+              <div>
+                <dt>Despesa</dt>
+                <dd>Valor que sai do seu fluxo financeiro, como mercado, transporte, mensalidade ou lazer.</dd>
+              </div>
+              <div>
+                <dt>Categoria</dt>
+                <dd>Grupo usado para organizar lançamentos semelhantes e permitir filtros, orçamento e gráfico.</dd>
+              </div>
+              <div>
+                <dt>Saldo</dt>
+                <dd>Diferença entre todas as receitas e todas as despesas que foram cadastradas.</dd>
+              </div>
+              <div>
+                <dt>Orçamento</dt>
+                <dd>Limite mensal recorrente para uma categoria específica; não é um lançamento financeiro.</dd>
+              </div>
+              <div>
+                <dt>Mês de referência</dt>
+                <dd>Mês atual do dispositivo, usado no cálculo de gastos de orçamento e no gráfico de despesas.</dd>
+              </div>
+              <div>
+                <dt>Taxa de economia</dt>
+                <dd>Percentual de receita restante após subtrair as despesas, podendo ser negativo.</dd>
+              </div>
+              <div>
+                <dt>Centavos</dt>
+                <dd>Unidade inteira usada internamente para guardar valores monetários sem imprecisão de ponto flutuante.</dd>
+              </div>
+              <div>
+                <dt>Armazenamento local</dt>
+                <dd>Espaço do navegador que guarda dados nesta máquina, sem transmissão a um banco de dados remoto.</dd>
+              </div>
+              <div>
+                <dt>JSON</dt>
+                <dd>Formato de texto estruturado usado pelo arquivo de exportação para organizar dados e metadados.</dd>
+              </div>
+            </dl>
+            <p>Se algum termo financeiro for novo para você, encare-o como uma forma de observar padrões, não como uma regra rígida. O planejamento mais útil é o que se adapta à sua realidade.</p>
+          </section>
+          <section id="help-principles" class="help-section">
+            <p class="help-kicker">BOAS PRÁTICAS</p>
+            <h3>Pequenos hábitos que ajudam na organização.</h3>
+            <p>O FinDash oferece dados; as escolhas continuam sendo suas. Estes princípios orientam um uso equilibrado da aplicação.</p>
+            <div class="principles-list">
+              <article>
+                <h4>Registre sem julgamento</h4>
+                <p>Um histórico confiável inclui gastos confortáveis e gastos difíceis. Registrar é observar, não punir.</p>
+              </article>
+              <article>
+                <h4>Compare períodos equivalentes</h4>
+                <p>Ao analisar um orçamento, compare despesas do mesmo mês de referência e considere compromissos sazonais.</p>
+              </article>
+              <article>
+                <h4>Use categorias coerentes</h4>
+                <p>Manter categorias semelhantes para gastos semelhantes melhora o valor do gráfico e dos filtros.</p>
+              </article>
+              <article>
+                <h4>Revise antes de concluir</h4>
+                <p>Uma edição simples pode corrigir tipo, valor ou data sem afetar os demais registros.</p>
+              </article>
+            </div>
+            <div class="help-note">
+              <strong>Importante</strong>
+              <p>O FinDash é uma ferramenta educacional de acompanhamento pessoal e não oferece aconselhamento financeiro, bancário, tributário ou de investimento.</p>
+            </div>
+          </section>
+          <footer class="help-footer"><p>FinDash · Guia local de utilização</p><button id="help-top" class="text-button" type="button">Voltar ao topo</button></footer>
+          <section class="help-section help-closing" aria-label="Encerramento do guia">
+            <p class="help-kicker">PRÓXIMO PASSO</p>
+            <h3>Volte ao painel quando estiver pronto.</h3>
+            <p>Você pode começar com um único lançamento ou explorar os exemplos fictícios. A qualquer momento, volte a esta central para consultar o funcionamento da ferramenta.</p>
+            <p>
+              Os registros permanecem sob seu controle neste navegador. Se desejar manter uma cópia, use a exportação antes de limpar dados do site ou trocar de dispositivo.
+            </p>
+            <p>
+              Uma visão financeira melhora gradualmente: mantenha descrições claras, escolha categorias consistentes e atualize o planejamento ao longo do mês.
+            </p>
+            <p>
+              Obrigado por utilizar o FinDash e por reservar um momento para cuidar da sua organização financeira.
+            </p>
+            <p>
+              Continue quando fizer sentido para você.
+              Seus dados continuam disponíveis neste navegador.
+            </p>
+            <ul class="check-list">
+              <li>Cadastre um lançamento real ou demonstrativo.</li>
+              <li>Confira como ele atualiza o resumo geral.</li>
+              <li>Experimente filtrar e editar o registro.</li>
+              <li>Crie um orçamento para uma categoria importante.</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </dialog>
+  <button id="back-to-top" class="back-to-top" type="button" aria-label="Voltar ao topo">↑</button>
 </body>
 </html>

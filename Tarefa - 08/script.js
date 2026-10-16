@@ -23,6 +23,7 @@ Object.assign(dom, { chart: document.querySelector("#expense-chart"), chartEmpty
 Object.assign(dom, { themeToggle: document.querySelector("#theme-toggle") });
 Object.assign(dom, { restoreDemo: document.querySelector("#restore-demo"), demoDialog: document.querySelector("#demo-dialog"), confirmDemo: document.querySelector("#confirm-demo") });
 Object.assign(dom, { exportData: document.querySelector("#export-data") });
+Object.assign(dom, { helpDialog: document.querySelector("#help-dialog"), openHelp: document.querySelector("#open-help"), closeHelp: document.querySelector("#close-help"), helpTop: document.querySelector("#help-top"), helpMain: document.querySelector(".help-main"), helpLinks: [...document.querySelectorAll(".help-nav a")], helpSections: [...document.querySelectorAll(".help-section")], backToTop: document.querySelector("#back-to-top") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -49,6 +50,7 @@ function initializeApp() {
   dom.restoreDemo.addEventListener("click", () => dom.demoDialog.showModal());
   dom.confirmDemo.addEventListener("click", restoreDemoData);
   dom.exportData.addEventListener("click", exportData);
+  initializeHelpCenter();
 }
 
 function initializeTheme() { const saved = localStorage.getItem(THEME_STORAGE_KEY); const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; applyTheme(saved || preferred); }
@@ -56,6 +58,106 @@ function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "
 function applyTheme(theme) { document.documentElement.dataset.theme = theme; dom.themeToggle?.setAttribute("aria-pressed", String(theme === "dark")); dom.themeToggle?.querySelector(".sr-only") && (dom.themeToggle.querySelector(".sr-only").textContent = theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"); try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch {} drawExpenseChart(); }
 function restoreDemoData() { const month = currentMonthKey(); const stamp = new Date().toISOString(); state.transactions = [{ id: crypto.randomUUID(), type: "income", description: "Salário demonstrativo", amountCents: 480000, category: "Trabalho", date: `${month}-05`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Mercado demonstrativo", amountCents: 6845, category: "Alimentação", date: `${month}-07`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Transporte demonstrativo", amountCents: 3200, category: "Transporte", date: `${month}-09`, createdAt: stamp }, { id: crypto.randomUUID(), type: "expense", description: "Curso demonstrativo", amountCents: 8900, category: "Educação", date: `${month}-11`, createdAt: stamp }]; state.budgets = [{ category: "Alimentação", limitCents: 90000 }, { category: "Transporte", limitCents: 45000 }, { category: "Lazer", limitCents: 35000 }]; saveTransactions(); saveBudgets(); renderTransactions(); updateIndicators(); renderBudgets(); drawExpenseChart(); showFeedback("Exemplos restaurados. Todos os dados são fictícios."); }
 function exportData() { const payload = { application: "FinDash", version: "0.10.0", exportedAt: new Date().toISOString(), currency: "BRL", transactions: state.transactions, budgets: state.budgets }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = `findash-dados-${todayISO()}.json`; document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(url); showFeedback("Arquivo JSON exportado com sucesso."); }
+
+// Central de ajuda: modal, navegação interna, FAQ e retorno ao topo.
+function initializeHelpCenter() {
+  if (!dom.helpDialog) return;
+  dom.openHelp.addEventListener("click", openHelpCenter);
+  dom.closeHelp.addEventListener("click", closeHelpCenter);
+  dom.helpTop.addEventListener("click", scrollHelpToTop);
+  dom.backToTop.addEventListener("click", scrollPageToTop);
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  dom.helpMain.addEventListener("scroll", updateHelpNavigation, { passive: true });
+  dom.helpLinks.forEach(link => link.addEventListener("click", handleHelpNavigation));
+  document.querySelectorAll(".faq-list details").forEach(item => item.addEventListener("toggle", handleFaqToggle));
+  dom.helpDialog.addEventListener("close", restoreOpeningFocus);
+  dom.helpDialog.addEventListener("cancel", event => { event.preventDefault(); closeHelpCenter(); });
+}
+
+function openHelpCenter(event) {
+  state.helpTrigger = event.currentTarget;
+  dom.helpDialog.showModal();
+  dom.helpMain.scrollTo({ top: 0, behavior: "instant" });
+  setActiveHelpLink("#help-start");
+  window.setTimeout(() => dom.closeHelp.focus(), 0);
+}
+
+function closeHelpCenter() {
+  if (dom.helpDialog.open) dom.helpDialog.close();
+}
+
+function restoreOpeningFocus() {
+  if (state.helpTrigger instanceof HTMLElement) state.helpTrigger.focus();
+  state.helpTrigger = null;
+}
+
+function handleHelpNavigation(event) {
+  event.preventDefault();
+  const link = event.currentTarget;
+  const target = document.querySelector(link.getAttribute("href"));
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  setActiveHelpLink(link.getAttribute("href"));
+}
+
+function setActiveHelpLink(hash) {
+  announceHelpSection(hash);
+  dom.helpLinks.forEach(link => {
+    const current = link.getAttribute("href") === hash;
+    link.classList.toggle("is-active", current);
+    if (current) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+}
+
+function updateHelpNavigation() {
+  const mainTop = dom.helpMain.getBoundingClientRect().top;
+  const visible = dom.helpSections.find(section => {
+    const rect = section.getBoundingClientRect();
+    return rect.top >= mainTop && rect.top < mainTop + 180;
+  });
+  if (visible) setActiveHelpLink(`#${visible.id}`);
+}
+
+function scrollHelpToTop() {
+  dom.helpMain.scrollTo({ top: 0, behavior: "smooth" });
+  setActiveHelpLink("#help-start");
+}
+
+function updateBackToTopVisibility() {
+  dom.backToTop.classList.toggle("is-visible", window.scrollY > 500);
+}
+
+function scrollPageToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function handleFaqToggle(event) {
+  const openedItem = event.currentTarget;
+  if (!openedItem.open) return;
+  // Mantém a leitura focada: uma resposta aberta por vez reduz rolagem excessiva no modal.
+  document.querySelectorAll(".faq-list details").forEach(item => {
+    if (item !== openedItem) item.open = false;
+  });
+}
+
+function getHelpSectionName(hash) {
+  const labels = {
+    "#help-start": "Começar",
+    "#help-transactions": "Lançamentos",
+    "#help-summary": "Indicadores",
+    "#help-budgets": "Orçamentos",
+    "#help-chart": "Gráfico",
+    "#help-data": "Dados e privacidade",
+    "#help-faq": "Perguntas frequentes"
+  };
+  return labels[hash] || "Central de ajuda";
+}
+
+function announceHelpSection(hash) {
+  const title = getHelpSectionName(hash);
+  dom.helpDialog.setAttribute("aria-label", `Central de ajuda: ${title}`);
+}
 
 function initializeNavigation() {
   if (!dom.menuButton || !dom.navigation) return;
