@@ -81,6 +81,11 @@ h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
 .empty-state { padding: 2.8rem 1rem; text-align: center; color: var(--muted); }.empty-state span { display: inline-grid; place-items: center; width: 2.8rem; height: 2.8rem; color: var(--primary); background: #e3f1df; border-radius: 50%; font-size: 1.5rem; }.empty-state h3 { margin: .8rem 0 .25rem; color: var(--ink); font-size: 1.05rem; }.empty-state p { margin: 0; font-size: .9rem; }
 .feedback { margin-bottom: 1rem; padding: .75rem 1rem; border-radius: .65rem; color: #075238; background: #d9f4e7; font-weight: 700; }.feedback.is-error { color: #8d2924; background: #fee4e1; }
 
+/* Indicadores globais atualizados a partir dos lançamentos persistidos. */
+.summary-section { padding: 5.5rem 0; background: var(--surface); }.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.summary-card { min-height: 10.5rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--canvas); }.summary-card p { margin: 0; color: var(--muted); font-weight: 700; font-size: .85rem; }.summary-card strong { display: block; margin: 1.25rem 0 .45rem; font-size: clamp(1.35rem, 2vw, 1.8rem); letter-spacing: -.05em; }.summary-card span { color: var(--muted); font-size: .8rem; }.income-card strong { color: #096043; }.expense-card strong { color: #b23e38; }.balance-card strong { color: var(--primary); }
+.saving-card { display: grid; grid-template-columns: 155px 1fr 245px; gap: 1.25rem; align-items: center; padding: 1.25rem; margin-top: 1rem; color: #ecfff3; background: var(--ink); border-radius: var(--radius-md); }.saving-card p { margin: 0; color: #b5c8bc; font-size: .85rem; }.saving-card strong { font-size: 1.6rem; }.saving-progress { height: .65rem; overflow: hidden; background: #3a4a43; border-radius: 1rem; }.saving-progress span { display: block; width: 0; height: 100%; background: var(--accent); transition: width .3s ease; }
+
 @media (max-width: 700px) {
   .menu-toggle { display: block; }
   .main-nav { display: none; position: absolute; left: 1.25rem; right: 1.25rem; top: 4.2rem; padding: 1rem; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow); }
@@ -88,6 +93,7 @@ h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
   .hero-grid, .privacy-content, .feature-grid { grid-template-columns: 1fr; }
   .hero-grid { gap: 2rem; }.hero-card { min-height: 260px; }.footer-content { align-items: flex-start; padding: 1.4rem 0; flex-direction: column; }
   .transactions-layout { grid-template-columns: 1fr; }.section-heading { align-items: start; flex-direction: column; gap: .7rem; }.section-heading > p { max-width: none; }.field-row { grid-template-columns: 1fr; gap: 0; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }.saving-card { grid-template-columns: 1fr; gap: .65rem; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.button { transition: none; } }

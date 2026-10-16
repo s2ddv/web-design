@@ -13,6 +13,7 @@ const dom = {
   list: document.querySelector("#transactions-list"), empty: document.querySelector("#empty-transactions"),
   count: document.querySelector("#transactions-count"), feedback: document.querySelector("#feedback"), cancelEdit: document.querySelector("#cancel-edit")
 };
+Object.assign(dom, { totalIncome: document.querySelector("#total-income"), totalExpenses: document.querySelector("#total-expenses"), totalBalance: document.querySelector("#total-balance"), summaryCount: document.querySelector("#summary-count"), balanceLabel: document.querySelector("#balance-label"), savingsRate: document.querySelector("#savings-rate"), savingsProgress: document.querySelector("#savings-progress"), savingsMessage: document.querySelector("#savings-message") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -22,6 +23,7 @@ function initializeApp() {
   state.transactions = loadTransactions();
   resetTransactionForm();
   renderTransactions();
+  updateIndicators();
   dom.form.addEventListener("submit", handleTransactionSubmit);
   dom.cancelEdit.addEventListener("click", resetTransactionForm);
 }
@@ -79,6 +81,28 @@ function handleTransactionSubmit(event) {
   if (error) return showFeedback(error, true);
   state.transactions.push({ id: crypto.randomUUID(), ...data, createdAt: new Date().toISOString() });
   saveTransactions(); resetTransactionForm(); renderTransactions(); showFeedback("Lançamento adicionado com sucesso.");
+  updateIndicators();
+}
+
+// O resumo usa somente centavos inteiros, evitando imprecisão financeira.
+function updateIndicators() {
+  if (!dom.totalIncome) return;
+  const totals = state.transactions.reduce((accumulator, transaction) => {
+    accumulator[transaction.type] += transaction.amountCents;
+    return accumulator;
+  }, { income: 0, expense: 0 });
+  const balance = totals.income - totals.expense;
+  const rate = totals.income ? (balance / totals.income) * 100 : null;
+  dom.totalIncome.textContent = formatMoney(totals.income);
+  dom.totalExpenses.textContent = formatMoney(totals.expense);
+  dom.totalBalance.textContent = formatMoney(balance);
+  dom.summaryCount.textContent = String(state.transactions.length);
+  dom.balanceLabel.textContent = !state.transactions.length ? "Aguardando lançamentos" : balance >= 0 ? "Resultado positivo" : "Atenção ao saldo negativo";
+  dom.savingsRate.textContent = rate === null ? "—" : `${rate.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
+  const progress = rate === null ? 0 : Math.max(0, Math.min(100, rate));
+  dom.savingsProgress.style.width = `${progress}%`;
+  dom.savingsProgress.parentElement.setAttribute("aria-valuenow", String(Math.round(progress)));
+  dom.savingsMessage.textContent = rate === null ? "Adicione receitas para acompanhar este indicador." : rate < 0 ? "As despesas ultrapassaram suas receitas." : rate < 20 ? "Há espaço para fortalecer sua reserva." : "Ótimo ritmo: você está preservando parte da receita.";
 }
 
 function renderTransactions() {
