@@ -2,9 +2,10 @@
 
 // Configurações, estado e referências do cadastro inicial de lançamentos.
 const STORAGE_KEY = "findash-transactions-v1";
+const BUDGET_STORAGE_KEY = "findash-budgets-v1";
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const dateView = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
-const state = { transactions: [], editingId: null };
+const state = { transactions: [], budgets: [], editingId: null, editingBudgetCategory: null };
 const dom = {
   menuButton: document.querySelector(".menu-toggle"), navigation: document.querySelector(".main-nav"),
   form: document.querySelector("#transaction-form"), type: document.querySelector("#transaction-type"),
@@ -16,6 +17,7 @@ const dom = {
 Object.assign(dom, { totalIncome: document.querySelector("#total-income"), totalExpenses: document.querySelector("#total-expenses"), totalBalance: document.querySelector("#total-balance"), summaryCount: document.querySelector("#summary-count"), balanceLabel: document.querySelector("#balance-label"), savingsRate: document.querySelector("#savings-rate"), savingsProgress: document.querySelector("#savings-progress"), savingsMessage: document.querySelector("#savings-message") });
 Object.assign(dom, { deleteDialog: document.querySelector("#delete-dialog"), deleteMessage: document.querySelector("#delete-dialog-message"), confirmDelete: document.querySelector("#confirm-delete") });
 Object.assign(dom, { search: document.querySelector("#search-transactions"), filterType: document.querySelector("#filter-type"), filterCategory: document.querySelector("#filter-category"), sort: document.querySelector("#sort-transactions"), noResults: document.querySelector("#no-results") });
+Object.assign(dom, { budgetList: document.querySelector("#budget-list"), emptyBudgets: document.querySelector("#empty-budgets"), budgetReference: document.querySelector("#budget-reference"), openBudget: document.querySelector("#open-budget-modal"), budgetDialog: document.querySelector("#budget-dialog"), budgetForm: document.querySelector("#budget-form"), budgetCategory: document.querySelector("#budget-category"), budgetLimit: document.querySelector("#budget-limit"), budgetFeedback: document.querySelector("#budget-feedback"), cancelBudget: document.querySelector("#cancel-budget") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -23,13 +25,18 @@ function initializeApp() {
   initializeNavigation();
   if (!dom.form) return;
   state.transactions = loadTransactions();
+  state.budgets = loadBudgets();
   resetTransactionForm();
   renderTransactions();
   updateIndicators();
+  renderBudgets();
   dom.form.addEventListener("submit", handleTransactionSubmit);
   dom.cancelEdit.addEventListener("click", resetTransactionForm);
   dom.confirmDelete.addEventListener("click", deleteSelectedTransaction);
   [dom.search, dom.filterType, dom.filterCategory, dom.sort].forEach(control => control.addEventListener("input", renderTransactions));
+  dom.openBudget.addEventListener("click", openBudgetDialog);
+  dom.cancelBudget.addEventListener("click", () => dom.budgetDialog.close());
+  dom.budgetForm.addEventListener("submit", saveBudget);
 }
 
 function initializeNavigation() {
@@ -93,6 +100,7 @@ function handleTransactionSubmit(event) {
   }
   saveTransactions(); resetTransactionForm(); renderTransactions();
   updateIndicators();
+  renderBudgets();
 }
 
 // O resumo usa somente centavos inteiros, evitando imprecisão financeira.
@@ -151,10 +159,19 @@ function createTransactionItem(transaction) {
 function createActionButton(label, icon, action, extraClass = "") { const button = document.createElement("button"); button.type = "button"; button.className = `icon-button ${extraClass}`; button.setAttribute("aria-label", label); button.textContent = icon; button.addEventListener("click", action); return button; }
 function startEditing(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.editingId = id; dom.type.value = item.type; dom.description.value = item.description; dom.amount.value = (item.amountCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 }); dom.category.value = item.category; dom.date.value = item.date; dom.form.querySelector("button[type='submit']").textContent = "Salvar alterações"; dom.cancelEdit.hidden = false; dom.description.focus(); }
 function requestDeletion(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.deletingId = id; dom.deleteMessage.textContent = `“${item.description}” será removido permanentemente.`; dom.deleteDialog.showModal(); }
-function deleteSelectedTransaction() { if (!state.deletingId) return; state.transactions = state.transactions.filter(item => item.id !== state.deletingId); state.deletingId = null; saveTransactions(); renderTransactions(); updateIndicators(); showFeedback("Lançamento excluído com sucesso."); }
+function deleteSelectedTransaction() { if (!state.deletingId) return; state.transactions = state.transactions.filter(item => item.id !== state.deletingId); state.deletingId = null; saveTransactions(); renderTransactions(); updateIndicators(); renderBudgets(); showFeedback("Lançamento excluído com sucesso."); }
 function resetTransactionForm() { state.editingId = null; dom.form.reset(); dom.type.value = "expense"; dom.date.value = todayISO(); dom.form.querySelector("button[type='submit']").textContent = "Adicionar lançamento"; dom.cancelEdit.hidden = true; }
 
 function isTransactionShape(item) { return item && typeof item.id === "string" && ["income", "expense"].includes(item.type) && typeof item.description === "string" && Number.isSafeInteger(item.amountCents) && item.amountCents > 0 && typeof item.category === "string" && isValidISODate(item.date); }
 function loadTransactions() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(saved) ? saved.filter(isTransactionShape) : []; } catch { showFeedback("Não foi possível recuperar os lançamentos locais.", true); return []; } }
 function saveTransactions() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.transactions)); } catch { showFeedback("Seu navegador não conseguiu salvar os dados locais.", true); } }
+function loadBudgets() { try { const saved = JSON.parse(localStorage.getItem(BUDGET_STORAGE_KEY) || "[]"); return Array.isArray(saved) ? saved.filter(item => item && typeof item.category === "string" && Number.isSafeInteger(item.limitCents) && item.limitCents > 0) : []; } catch { return []; } }
+function saveBudgets() { try { localStorage.setItem(BUDGET_STORAGE_KEY, JSON.stringify(state.budgets)); } catch { showFeedback("Seu navegador não conseguiu salvar os orçamentos.", true); } }
+
+function currentMonthKey() { return todayISO().slice(0, 7); }
+function openBudgetDialog() { state.editingBudgetCategory = null; dom.budgetForm.reset(); dom.budgetFeedback.textContent = ""; dom.budgetDialog.showModal(); dom.budgetCategory.focus(); }
+function saveBudget(event) { event.preventDefault(); const category = dom.budgetCategory.value; const limitCents = parseAmountToCents(dom.budgetLimit.value); if (!category || !limitCents) { dom.budgetFeedback.textContent = "Escolha uma categoria e informe um limite válido."; return; } const index = state.budgets.findIndex(item => item.category === category); if (index >= 0) state.budgets[index].limitCents = limitCents; else state.budgets.push({ category, limitCents }); saveBudgets(); dom.budgetDialog.close(); renderBudgets(); showFeedback("Orçamento salvo com sucesso."); }
+function getCurrentMonthSpending(category) { return state.transactions.filter(item => item.type === "expense" && item.category === category && item.date.startsWith(currentMonthKey())).reduce((total, item) => total + item.amountCents, 0); }
+function renderBudgets() { if (!dom.budgetList) return; dom.budgetList.replaceChildren(); dom.budgetReference.textContent = `Referência: ${new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(new Date(`${currentMonthKey()}-01T12:00:00`))}`; state.budgets.forEach(budget => dom.budgetList.append(createBudgetCard(budget))); dom.emptyBudgets.hidden = state.budgets.length > 0; }
+function createBudgetCard(budget) { const spent = getCurrentMonthSpending(budget.category); const percent = (spent / budget.limitCents) * 100; const card = document.createElement("article"); card.className = `budget-card ${percent >= 100 ? "exceeded" : percent >= 80 ? "warning" : ""}`; const heading = document.createElement("h3"); heading.textContent = budget.category; const value = document.createElement("strong"); value.textContent = `${formatMoney(spent)} de ${formatMoney(budget.limitCents)}`; const bar = document.createElement("div"); bar.className = "budget-bar"; const fill = document.createElement("span"); fill.style.width = `${Math.min(100, percent)}%`; bar.append(fill); const status = document.createElement("p"); status.textContent = percent >= 100 ? "Limite ultrapassado" : percent >= 80 ? "Próximo do limite" : `${Math.round(percent)}% utilizado`; const actions = document.createElement("div"); actions.className = "budget-actions"; actions.append(createActionButton("Editar orçamento", "✎", () => { dom.budgetCategory.value = budget.category; dom.budgetLimit.value = (budget.limitCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 }); dom.budgetDialog.showModal(); }), createActionButton("Excluir orçamento", "×", () => { state.budgets = state.budgets.filter(item => item.category !== budget.category); saveBudgets(); renderBudgets(); }, "delete")); card.append(heading, value, bar, status, actions); return card; }
 function showFeedback(message, isError = false) { dom.feedback.textContent = message; dom.feedback.classList.toggle("is-error", isError); dom.feedback.hidden = false; clearTimeout(showFeedback.timer); showFeedback.timer = setTimeout(() => { dom.feedback.hidden = true; }, 4500); }

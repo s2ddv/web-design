@@ -142,6 +142,10 @@
         </div>
       </div>
     </section>
+    <section id="orcamentos" class="budgets-section" aria-labelledby="budget-title">
+      <div class="container"><div class="section-heading"><div><p class="eyebrow">PLANEJAMENTO</p><h2 id="budget-title">Orçamentos mensais por categoria.</h2></div><p>O uso considera exclusivamente as despesas do mês atual.</p></div>
+      <div class="budget-toolbar"><button id="open-budget-modal" class="button button-primary" type="button">Definir orçamento</button><p id="budget-reference">Mês de referência</p></div><div id="budget-list" class="budget-grid"></div><div id="empty-budgets" class="empty-state budget-empty"><span aria-hidden="true">◫</span><h3>Planeje por categoria</h3><p>Defina um limite mensal para acompanhar seus gastos.</p></div></div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -154,6 +158,9 @@
   <!-- Modal nativo de confirmação; permanece oculto até a ação de exclusão. -->
   <dialog id="delete-dialog" class="modal-dialog" aria-labelledby="delete-dialog-title">
     <form method="dialog" class="modal-content"><p class="eyebrow">CONFIRMAR EXCLUSÃO</p><h2 id="delete-dialog-title">Excluir lançamento?</h2><p id="delete-dialog-message">Esta ação não poderá ser desfeita.</p><div class="modal-actions"><button id="cancel-delete" class="button button-ghost" value="cancel">Cancelar</button><button id="confirm-delete" class="button button-danger" value="confirm">Excluir lançamento</button></div></form>
+  </dialog>
+  <dialog id="budget-dialog" class="modal-dialog" aria-labelledby="budget-dialog-title">
+    <form id="budget-form" class="modal-content" novalidate><p class="eyebrow">PLANEJAMENTO MENSAL</p><h2 id="budget-dialog-title">Definir orçamento</h2><p>O limite será repetido a cada mês para a categoria escolhida.</p><label class="modal-field"><span>Categoria</span><select id="budget-category" required><option value="">Selecione</option><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Educação</option><option>Trabalho</option><option>Outros</option></select></label><label class="modal-field"><span>Limite mensal (R$)</span><input id="budget-limit" type="text" inputmode="decimal" placeholder="0,00" required></label><p id="budget-feedback" class="modal-feedback" role="status"></p><div class="modal-actions"><button id="cancel-budget" class="button button-ghost" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar orçamento</button></div></form>
   </dialog>
 </body>
 </html>
