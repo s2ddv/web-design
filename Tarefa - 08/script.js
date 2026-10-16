@@ -14,6 +14,7 @@ const dom = {
   count: document.querySelector("#transactions-count"), feedback: document.querySelector("#feedback"), cancelEdit: document.querySelector("#cancel-edit")
 };
 Object.assign(dom, { totalIncome: document.querySelector("#total-income"), totalExpenses: document.querySelector("#total-expenses"), totalBalance: document.querySelector("#total-balance"), summaryCount: document.querySelector("#summary-count"), balanceLabel: document.querySelector("#balance-label"), savingsRate: document.querySelector("#savings-rate"), savingsProgress: document.querySelector("#savings-progress"), savingsMessage: document.querySelector("#savings-message") });
+Object.assign(dom, { deleteDialog: document.querySelector("#delete-dialog"), deleteMessage: document.querySelector("#delete-dialog-message"), confirmDelete: document.querySelector("#confirm-delete") });
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -26,6 +27,7 @@ function initializeApp() {
   updateIndicators();
   dom.form.addEventListener("submit", handleTransactionSubmit);
   dom.cancelEdit.addEventListener("click", resetTransactionForm);
+  dom.confirmDelete.addEventListener("click", deleteSelectedTransaction);
 }
 
 function initializeNavigation() {
@@ -79,8 +81,15 @@ function handleTransactionSubmit(event) {
   const data = { type: dom.type.value, description: dom.description.value.trim(), amountCents: parseAmountToCents(dom.amount.value), category: dom.category.value, date: dom.date.value };
   const error = validateTransaction(data);
   if (error) return showFeedback(error, true);
-  state.transactions.push({ id: crypto.randomUUID(), ...data, createdAt: new Date().toISOString() });
-  saveTransactions(); resetTransactionForm(); renderTransactions(); showFeedback("Lançamento adicionado com sucesso.");
+  if (state.editingId) {
+    const current = state.transactions.find(item => item.id === state.editingId);
+    Object.assign(current, data);
+    showFeedback("Lançamento atualizado com sucesso.");
+  } else {
+    state.transactions.push({ id: crypto.randomUUID(), ...data, createdAt: new Date().toISOString() });
+    showFeedback("Lançamento adicionado com sucesso.");
+  }
+  saveTransactions(); resetTransactionForm(); renderTransactions();
   updateIndicators();
 }
 
@@ -121,10 +130,16 @@ function createTransactionItem(transaction) {
   const description = document.createElement("p"); description.className = "transaction-description"; description.textContent = transaction.description;
   const meta = document.createElement("p"); meta.className = "transaction-meta"; meta.textContent = `${transaction.category} · ${formatDate(transaction.date)}`;
   const amount = document.createElement("p"); amount.className = `transaction-amount ${transaction.type}`; amount.textContent = `${transaction.type === "income" ? "+" : "−"} ${formatMoney(transaction.amountCents)}`;
-  details.append(description, meta); item.append(icon, details, amount); return item;
+  const actions = document.createElement("div"); actions.className = "transaction-actions";
+  actions.append(createActionButton("Editar", "✎", () => startEditing(transaction.id)), createActionButton("Excluir", "×", () => requestDeletion(transaction.id), "delete"));
+  details.append(description, meta); item.append(icon, details, amount, actions); return item;
 }
 
-function resetTransactionForm() { dom.form.reset(); dom.type.value = "expense"; dom.date.value = todayISO(); }
+function createActionButton(label, icon, action, extraClass = "") { const button = document.createElement("button"); button.type = "button"; button.className = `icon-button ${extraClass}`; button.setAttribute("aria-label", label); button.textContent = icon; button.addEventListener("click", action); return button; }
+function startEditing(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.editingId = id; dom.type.value = item.type; dom.description.value = item.description; dom.amount.value = (item.amountCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 }); dom.category.value = item.category; dom.date.value = item.date; dom.form.querySelector("button[type='submit']").textContent = "Salvar alterações"; dom.cancelEdit.hidden = false; dom.description.focus(); }
+function requestDeletion(id) { const item = state.transactions.find(transaction => transaction.id === id); if (!item) return; state.deletingId = id; dom.deleteMessage.textContent = `“${item.description}” será removido permanentemente.`; dom.deleteDialog.showModal(); }
+function deleteSelectedTransaction() { if (!state.deletingId) return; state.transactions = state.transactions.filter(item => item.id !== state.deletingId); state.deletingId = null; saveTransactions(); renderTransactions(); updateIndicators(); showFeedback("Lançamento excluído com sucesso."); }
+function resetTransactionForm() { state.editingId = null; dom.form.reset(); dom.type.value = "expense"; dom.date.value = todayISO(); dom.form.querySelector("button[type='submit']").textContent = "Adicionar lançamento"; dom.cancelEdit.hidden = true; }
 
 function isTransactionShape(item) { return item && typeof item.id === "string" && ["income", "expense"].includes(item.type) && typeof item.description === "string" && Number.isSafeInteger(item.amountCents) && item.amountCents > 0 && typeof item.category === "string" && isValidISODate(item.date); }
 function loadTransactions() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(saved) ? saved.filter(isTransactionShape) : []; } catch { showFeedback("Não foi possível recuperar os lançamentos locais.", true); return []; } }

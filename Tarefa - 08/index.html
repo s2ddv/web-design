@@ -144,5 +144,9 @@
       <a href="#privacidade">Aviso de privacidade</a>
     </div>
   </footer>
+  <!-- Modal nativo de confirmação; permanece oculto até a ação de exclusão. -->
+  <dialog id="delete-dialog" class="modal-dialog" aria-labelledby="delete-dialog-title">
+    <form method="dialog" class="modal-content"><p class="eyebrow">CONFIRMAR EXCLUSÃO</p><h2 id="delete-dialog-title">Excluir lançamento?</h2><p id="delete-dialog-message">Esta ação não poderá ser desfeita.</p><div class="modal-actions"><button id="cancel-delete" class="button button-ghost" value="cancel">Cancelar</button><button id="confirm-delete" class="button button-danger" value="confirm">Excluir lançamento</button></div></form>
+  </dialog>
 </body>
 </html>
